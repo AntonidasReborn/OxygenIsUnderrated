@@ -18,11 +18,11 @@ int main(void){
     ALLEGRO_DISPLAY *janela = NULL;
     ALLEGRO_EVENT_QUEUE *fila_eventos = NULL;
     ALLEGRO_BITMAP *botao_sair = NULL, *botao_jogar=NULL,*botao_historia=NULL,*botao_tutorial=NULL,*area_central=0;
-    ALLEGRO_BITMAP *background =NULL,*backgroundHistoria=NULL;
+    ALLEGRO_BITMAP *background =NULL,*backgroundHistoria=NULL,*backgroundTutorial=NULL;
     ALLEGRO_BITMAP *imagem =NULL;
     ALLEGRO_AUDIO_STREAM *musica =NULL;
     // Flag que condicionará nosso looping
-    int sair = 0,historia = 0;
+    int sair = 0,historia = 0,tutorial=0;
     if(!al_install_audio()){
         error_msg("Falha ao inicializar o audio");
         return 0;
@@ -52,7 +52,7 @@ int main(void){
     }
     
     // Configura o título da janela
-    al_set_window_title(janela, "Rotinas de Mouse");
+    al_set_window_title(janela, "Oxygen Is Underrated");
  
     // Torna apto o uso de mouse na aplicação
     if (!al_install_mouse()){
@@ -60,6 +60,12 @@ int main(void){
         al_destroy_display(janela);
         return -1;
     }
+    if (!al_install_keyboard())
+  {
+    error_msg("Falha ao inicializar o teclado.\n");
+    al_destroy_display(janela);
+    return -1;
+  }
  
     // Atribui o cursor padrão do sistema para ser usado
     if (!al_set_system_mouse_cursor(janela, ALLEGRO_SYSTEM_MOUSE_CURSOR_DEFAULT)){
@@ -67,8 +73,14 @@ int main(void){
         al_destroy_display(janela);
         return -1;
     }
-    backgroundHistoria = al_load_bitmap("/home/flavinl2/Desktop/OxygenIsUnderrated/Resource/background/Backgrounds_800x600/spacebackground_MENU.jpg");
+    backgroundHistoria = al_load_bitmap("/home/flavinl2/Desktop/OxygenIsUnderrated/Resource/background/Backgrounds_800x600/Game_Hist.png");
     if (!backgroundHistoria){
+        error_msg("Falha ao criar bitmap");
+        al_destroy_display(janela);
+        return -1;
+    }
+    backgroundTutorial = al_load_bitmap("/home/flavinl2/Desktop/OxygenIsUnderrated/Resource/background/Backgrounds_800x600/Game_Tutorial.png");
+    if (!backgroundTutorial){
         error_msg("Falha ao criar bitmap");
         al_destroy_display(janela);
         return -1;
@@ -136,6 +148,7 @@ int main(void){
  
     // Dizemos que vamos tratar os eventos vindos do mouse
     al_register_event_source(fila_eventos, al_get_mouse_event_source());
+    al_register_event_source(fila_eventos, al_get_keyboard_event_source());
  
     // Flag indicando se o mouse está sobre o retângulo central
     int botaoSair = 0,botaoJogar = 0,botaoTutorial = 0,botaoHistoria = 0;
@@ -187,12 +200,50 @@ int main(void){
                 evento.mouse.y >= ALTURA_TELA - al_get_bitmap_height(botao_sair) - 10){
                     sair = 1;
                 }
+                if (evento.mouse.x >= LARGURA_TELA - al_get_bitmap_width(botao_historia) - 550 &&
+                evento.mouse.x <= LARGURA_TELA - 550 && evento.mouse.y <= ALTURA_TELA - 10 &&
+                evento.mouse.y >= ALTURA_TELA - al_get_bitmap_height(botao_historia) - 10){
+                    historia = 1;
+                }
+                if (evento.mouse.x >= LARGURA_TELA - al_get_bitmap_width(botao_tutorial) - 300 &&
+                evento.mouse.x <= LARGURA_TELA - 300 && evento.mouse.y <= ALTURA_TELA - 10 &&
+                evento.mouse.y >= ALTURA_TELA - al_get_bitmap_height(botao_tutorial) - 10){
+                    tutorial = 1;
+                }
             }
         }   
- 
-        // Limpamos a tela
+        while(historia==1){
+            while (!al_is_event_queue_empty(fila_eventos)){
+            ALLEGRO_EVENT evento;
+            al_wait_for_event(fila_eventos, &evento);
+            if(evento.type == ALLEGRO_EVENT_KEY_DOWN){
+                switch (evento.keyboard.keycode){
+                    case ALLEGRO_KEY_ENTER:
+                        historia=0;
+                }
+            }
+        }
+             al_draw_bitmap(backgroundHistoria, LARGURA_TELA - al_get_bitmap_width(backgroundHistoria),
+        ALTURA_TELA  - al_get_bitmap_height(backgroundHistoria), 0);
         
-        // Desenhamos os retângulos na tela
+         al_flip_display();    
+    }
+     while(tutorial==1){
+            while (!al_is_event_queue_empty(fila_eventos)){
+            ALLEGRO_EVENT evento;
+            al_wait_for_event(fila_eventos, &evento);
+            if(evento.type == ALLEGRO_EVENT_KEY_DOWN){
+                switch (evento.keyboard.keycode){
+                    case ALLEGRO_KEY_ENTER:
+                        tutorial=0;
+                }
+            }
+        }
+             al_draw_bitmap(backgroundTutorial, LARGURA_TELA - al_get_bitmap_width(backgroundTutorial),
+        ALTURA_TELA  - al_get_bitmap_height(backgroundTutorial), 0);
+        
+         al_flip_display();    
+    }
         al_set_target_bitmap(al_get_backbuffer(janela));
         al_draw_bitmap(background, LARGURA_TELA - al_get_bitmap_width(background),
         ALTURA_TELA  - al_get_bitmap_height(background), 0);
@@ -227,6 +278,8 @@ int main(void){
             al_draw_bitmap(botao_tutorial, LARGURA_TELA - al_get_bitmap_width(botao_tutorial)-300,
         ALTURA_TELA  - al_get_bitmap_height(botao_tutorial)-10, 0);
         }
+        
+        
         // Atualiza a tela
         al_flip_display();
     }
