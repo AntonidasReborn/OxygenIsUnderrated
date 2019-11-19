@@ -73,56 +73,56 @@ int main(void){
         al_destroy_display(janela);
         return -1;
     }
-    backgroundHistoria = al_load_bitmap("/home/flavinl2/Desktop/OxygenIsUnderrated/Resource/background/Backgrounds_800x600/Game_Hist.png");
+    backgroundHistoria = al_load_bitmap("Resource/background/Backgrounds_800x600/Game_Hist.png");
     if (!backgroundHistoria){
-        error_msg("Falha ao criar bitmap");
+        error_msg("Falha ao criar backgroundHistoria");
         al_destroy_display(janela);
         return -1;
     }
-    backgroundTutorial = al_load_bitmap("/home/flavinl2/Desktop/OxygenIsUnderrated/Resource/background/Backgrounds_800x600/Game_Tutorial.png");
+    backgroundTutorial = al_load_bitmap("Resource/background/Backgrounds_800x600/Game_Tutorial.png");
     if (!backgroundTutorial){
-        error_msg("Falha ao criar bitmap");
+        error_msg("Falha ao criar backgroundTutorial");
         al_destroy_display(janela);
         return -1;
     }
     // Alocamos o retângulo central da tela
-    background = al_load_bitmap("/home/flavinl2/Desktop/OxygenIsUnderrated/Resource/background/Backgrounds_800x600/spacebackground_MENU2.jpg");
+    background = al_load_bitmap("Resource/background/Backgrounds_800x600/spacebackground_MENU2.jpg");
     if (!background){
-        error_msg("Falha ao criar bitmap");
+        error_msg("Falha ao criar background");
         al_destroy_display(janela);
         return -1;
     }
  
     // Alocamos o botão para fechar a aplicação
-    botao_sair = al_load_bitmap("/home/flavinl2/Desktop/OxygenIsUnderrated/Resource/objects/botao_SAIR.png");
+    botao_sair = al_load_bitmap("Resource/objects/botao_SAIR.png");
     if (!botao_sair){
         error_msg("Falha ao criar botão de saída");
         al_destroy_bitmap(area_central);
         al_destroy_display(janela);
         return -1;
     }
-    botao_historia = al_load_bitmap("/home/flavinl2/Desktop/OxygenIsUnderrated/Resource/objects/botao_HISTORIA.png");
+    botao_historia = al_load_bitmap("Resource/objects/botao_HISTORIA.png");
     if (!botao_historia){
         error_msg("Falha ao criar botao_historia");
         al_destroy_bitmap(area_central);
         al_destroy_display(janela);
         return -1;
     }
-    botao_tutorial = al_load_bitmap("/home/flavinl2/Desktop/OxygenIsUnderrated/Resource/objects/botao_TUTORIAL.png");
+    botao_tutorial = al_load_bitmap("Resource/objects/botao_TUTORIAL.png");
     if (!botao_tutorial){
         error_msg("Falha ao criar botao_tutorial");
         al_destroy_bitmap(area_central);
         al_destroy_display(janela);
         return -1;
     }
-    botao_jogar = al_load_bitmap("/home/flavinl2/Desktop/OxygenIsUnderrated/Resource/objects/botao_JOGAR.png");
+    botao_jogar = al_load_bitmap("Resource/objects/botao_JOGAR.png");
     if (!botao_jogar){
         error_msg("Falha ao criar botao_jogar");
         al_destroy_bitmap(area_central);
         al_destroy_display(janela);
         return -1;
     }
-    musica = al_load_audio_stream("/home/flavinl2/Downloads/musica.ogg", 4, 1024);
+    musica = al_load_audio_stream("Resource/Music/Interestelar_music.ogg", 4, 1024);
     if (!musica)
     {
         error_msg( "Audio nao carregado" );
