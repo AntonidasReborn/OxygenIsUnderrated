@@ -17,40 +17,7 @@
 #define ASTRDEFAULT 4
 #define LOGIN_MAX_SIZE 13
 
- void readInput(ALLEGRO_EVENT event, char str[], int limit)
-{
-    if (event.type == ALLEGRO_EVENT_KEY_CHAR)
-    {
-        if (strlen(str) <= limit) 
-        {
-            char temp[] = {event.keyboard.unichar, '\0'};
-            if (event.keyboard.unichar == ' ')
-            {
-                strcat(str, temp);
-            }
-            else if (event.keyboard.unichar >= '!' &&
-                     event.keyboard.unichar <= '?')
-            {
-                strcat(str, temp);
-            }
-            else if (event.keyboard.unichar >= 'A' &&
-                     event.keyboard.unichar <= 'Z')
-            {
-                strcat(str, temp);
-            }
-            else if (event.keyboard.unichar >= 'a' &&
-                     event.keyboard.unichar <= 'z')
-            {
-                strcat(str, temp);
-            }
-        }
 
-        if (event.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && strlen(str) != 0)
-        {
-            str[strlen(str) - 1] = '\0';
-        }
-    }
-}
 void error_msg(char *text){
 	al_show_native_message_box(NULL,"ERRO",
 		"Ocorreu o seguinte erro e o programa sera finalizado:",
@@ -105,7 +72,7 @@ int main(void){
         error_msg("Falha ao criar janela");
         return -1;
     }
-    font = al_load_font("Resource/font/Minecraft.ttf", 68, 0);
+    font = al_load_font("examples/graphicChat/Resource/font/Minecraft.ttf", 68, 0);
     if (!font){
         al_destroy_display(janela);
         error_msg("Falha ao carregar fonte");
@@ -134,63 +101,63 @@ int main(void){
         al_destroy_display(janela);
         return -1;
     }
-    astrBR = al_load_bitmap("Resource/skins/AstrounautaBR.png");
+    astrBR = al_load_bitmap("examples/graphicChat/Resource/skins/AstrounautaBR.png");
     if (!astrBR){
         error_msg("Falha ao criar bitmap");
         al_destroy_display(janela);
         return -1;
     }
-    astrURSS = al_load_bitmap("Resource/skins/AstrounautinhaURSS.png");
+    astrURSS = al_load_bitmap("examples/graphicChat/Resource/skins/AstrounautinhaURSS.png");
     if (!astrURSS){
         error_msg("Falha ao criar bitmap");
         al_destroy_display(janela);
         return -1;
     }
-    astrMessi = al_load_bitmap("Resource/skins/AstrounautaARGENTINA.png");
+    astrMessi = al_load_bitmap("examples/graphicChat/Resource/skins/AstrounautaARGENTINA.png");
     if (!astrMessi){
         error_msg("Falha ao criar bitmap");
         al_destroy_display(janela);
         return -1;
     }
-    astrDefault = al_load_bitmap("Resource/skins/Astrounautinha.png");
+    astrDefault = al_load_bitmap("examples/graphicChat/Resource/skins/Astrounautinha.png");
     if (!astrDefault){
         error_msg("Falha ao criar bitmap");
         al_destroy_display(janela);
         return -1;
     }
     
-    backgroundCharacter = al_load_bitmap("Resource/background/Backgrounds_800x600/EscolhaPersonagem_background.png");
+    backgroundCharacter = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/EscolhaPersonagem_background.png");
     if (!backgroundCharacter){
         error_msg("Falha ao criar bitmap");
         al_destroy_display(janela);
         return -1;
     }
-    backgroundHistoria = al_load_bitmap("Resource/background/Backgrounds_800x600/Game_Hist.png");
+    backgroundHistoria = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/Game_Hist.png");
     if (!backgroundHistoria){
         error_msg("Falha ao criar bitmap");
         al_destroy_display(janela);
         return -1;
     }
-    backgroundTutorial = al_load_bitmap("Resource/background/Backgrounds_800x600/Game_Tutorial.png");
+    backgroundTutorial = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/Game_Tutorial.png");
     if (!backgroundTutorial){
         error_msg("Falha ao criar bitmap");
         al_destroy_display(janela);
         return -1;
     }
     // Alocamos o retângulo central da tela
-    background = al_load_bitmap("Resource/background/Backgrounds_800x600/spacebackground_MENU2.jpg");
+    background = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/spacebackground_MENU2.jpg");
     if (!background){
         error_msg("Falha ao criar bitmap");
         al_destroy_display(janela);
         return -1;
     }
-     backgroundIP = al_load_bitmap("Resource/background/Backgrounds_800x600/DigiteIP_background.png");
+     backgroundIP = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/DigiteIP_background.png");
     if (!background){
         error_msg("Falha ao criar bitmap");
         al_destroy_display(janela);
         return -1;
     }
-    backgroundLogin = al_load_bitmap("Resource/background/Backgrounds_800x600/DigiteLogin_background.png");
+    backgroundLogin = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/DigiteLogin_background.png");
     if (!background){
         error_msg("Falha ao criar bitmap");
         al_destroy_display(janela);
@@ -198,35 +165,35 @@ int main(void){
     }
  
     // Alocamos o botão para fechar a aplicação
-    botao_sair = al_load_bitmap("Resource/objects/botao_SAIR.png");
+    botao_sair = al_load_bitmap("examples/graphicChat/Resource/objects/botao_SAIR.png");
     if (!botao_sair){
         error_msg("Falha ao criar botão de saída");
         al_destroy_bitmap(area_central);
         al_destroy_display(janela);
         return -1;
     }
-    botao_historia = al_load_bitmap("Resource/objects/botao_HISTORIA.png");
+    botao_historia = al_load_bitmap("examples/graphicChat/Resource/objects/botao_HISTORIA.png");
     if (!botao_historia){
         error_msg("Falha ao criar botao_historia");
         al_destroy_bitmap(area_central);
         al_destroy_display(janela);
         return -1;
     }
-    botao_tutorial = al_load_bitmap("Resource/objects/botao_TUTORIAL.png");
+    botao_tutorial = al_load_bitmap("examples/graphicChat/Resource/objects/botao_TUTORIAL.png");
     if (!botao_tutorial){
         error_msg("Falha ao criar botao_tutorial");
         al_destroy_bitmap(area_central);
         al_destroy_display(janela);
         return -1;
     }
-    botao_jogar = al_load_bitmap("Resource/objects/botao_JOGAR.png");
+    botao_jogar = al_load_bitmap("examples/graphicChat/Resource/objects/botao_JOGAR.png");
     if (!botao_jogar){
         error_msg("Falha ao criar botao_jogar");
         al_destroy_bitmap(area_central);
         al_destroy_display(janela);
         return -1;
     }
-    musica = al_load_audio_stream("Resource/Music/Interestelar_music.ogg", 4, 1024);
+    musica = al_load_audio_stream("examples/graphicChat/Resource/Music/Interestelar_music.ogg", 4, 1024);
     if (!musica)
     {
         error_msg( "Audio nao carregado" );

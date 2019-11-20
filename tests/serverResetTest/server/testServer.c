@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-const int MAX_CLIENTS = 4;
+const int MAX_CLIENTS = 3;
 
 int main() {
   serverInit(MAX_CLIENTS);
