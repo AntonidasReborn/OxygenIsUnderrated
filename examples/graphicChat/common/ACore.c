@@ -15,38 +15,46 @@ bool coreInit()
     //modules and add-ons initialization
 	if (!al_init())
     {
-        fprintf(stderr, "Falha ao inicializar Allegro.\n");
+        //fprintf(stderr, "Falha ao inicializar Allegro.\n");
         return false;
     }
 
     if (!al_init_image_addon())
     {
-        fprintf(stderr, "Falha ao inicializar add-on allegro_image.\n");
+        //fprintf(stderr, "Falha ao inicializar add-on allegro_image.\n");
         return false;
     }
 
     if (!al_init_font_addon())
     {
-        fprintf(stderr, "Falha ao inicializar add-on allegro_font.\n");
+        //fprintf(stderr, "Falha ao inicializar add-on allegro_font.\n");
         return false;
     }
 
     if (!al_init_ttf_addon())
     {
-        fprintf(stderr, "Falha ao inicializar add-on allegro_ttf.\n");
+        //fprintf(stderr, "Falha ao inicializar add-on allegro_ttf.\n");
         return false;
     }
 
     if (!al_init_primitives_addon())
     {
-        fprintf(stderr, "Falha ao inicializar add-on allegro_primitives.\n");
+        //fprintf(stderr, "Falha ao inicializar add-on allegro_primitives.\n");
+        return false;
+    }
+    if(!al_install_audio()){
+        printf("Erro na musica3");
+        return false;
+    }
+    if(!al_init_acodec_addon()){
+        printf("Erro na musica4");
         return false;
     }
 
-    eventsQueue = al_create_event_queue();
-    if (!eventsQueue)
+    fila_eventos = al_create_event_queue();
+    if (!fila_eventos)
     {
-        fprintf(stderr, "Falha ao criar fila de eventos.\n");
+        //fprintf(stderr, "Falha ao criar fila de eventos.\n");
         return false;
     }
 
@@ -60,16 +68,16 @@ bool coreInit()
 bool windowInit(int W, int H, char title[])
 {
     //window and event queue creation
-    main_window = al_create_display(W, H);
-    if (!main_window)
+    janela = al_create_display(W, H);
+    if (!janela)
     {
-        fprintf(stderr, "Falha ao criar janela.\n");
+        //fprintf(stderr, "Falha ao criar janela.\n");
         return false;
     }
-    al_set_window_title(main_window, title);
+    al_set_window_title(janela, title);
 
     //registra janela na fila de eventos
-    al_register_event_source(eventsQueue, al_get_display_event_source(main_window));
+    al_register_event_source(fila_eventos, al_get_display_event_source(janela));
 
     return true;
 }
@@ -82,16 +90,16 @@ bool inputInit()
 	//Inicializa Mouse
 	if (!al_install_mouse())
     {
-        fprintf(stderr, "Falha ao inicializar o mouse.\n");
-        al_destroy_display(main_window);
+        //fprintf(stderr, "Falha ao inicializar o mouse.\n");
+        al_destroy_display(janela);
         return false;
     }
 
     // Atribui o cursor padrão do sistema para ser usado
-    if (!al_set_system_mouse_cursor(main_window, ALLEGRO_SYSTEM_MOUSE_CURSOR_DEFAULT))
+    if (!al_set_system_mouse_cursor(janela, ALLEGRO_SYSTEM_MOUSE_CURSOR_DEFAULT))
     {
-        fprintf(stderr, "Falha ao atribuir ponteiro do mouse.\n");
-        al_destroy_display(main_window);
+        //fprintf(stderr, "Falha ao atribuir ponteiro do mouse.\n");
+        al_destroy_display(janela);
         return false;
     }
     /*------------------------------MOUSE--------------------------------*/
@@ -99,7 +107,7 @@ bool inputInit()
     /*------------------------------KEYBOARD------------------------------*/
     if (!al_install_keyboard())
     {
-        fprintf(stderr, "Falha ao inicializar o teclado.\n");
+        //fprintf(stderr, "Falha ao inicializar o teclado.\n");
         return false;
     }
 
@@ -107,8 +115,8 @@ bool inputInit()
 
 
     //Registra mouse e teclado na fila de eventos
-    al_register_event_source(eventsQueue, al_get_mouse_event_source());
-    al_register_event_source(eventsQueue, al_get_keyboard_event_source());
+    al_register_event_source(fila_eventos, al_get_mouse_event_source());
+    al_register_event_source(fila_eventos, al_get_keyboard_event_source());
 
     return true;
 }
@@ -174,8 +182,8 @@ void FPSLimit()
 //FOR DEALLOCATING ALL ALLEGRO STUFF
 void allegroEnd()
 {
-    al_destroy_display(main_window);
-    al_destroy_event_queue(eventsQueue);
+    al_destroy_display(janela);
+    al_destroy_event_queue(fila_eventos);
 }
 
 
@@ -183,39 +191,96 @@ void allegroEnd()
 bool fontInit()
 {
     /*------------------------------FONTE--------------------------------*/
-    start = al_load_font("examples/graphicChat/Resources/Fonts/pressStart.ttf", 16, 0);
-    if (!start)
-    {
-        fprintf(stderr, "Falha ao carregar \"examples/graphicChat/Resources/Fonts/pressStart.ttf\".\n");
-        return false;
-    }
-
-    ubuntu = al_load_font("examples/graphicChat/Resources/Fonts/Ubuntu-R.ttf", 32, 0);
-    if (!ubuntu)
-    {
-        fprintf(stderr, "Falha ao carregar \"Ubuntu-R.ttf\".\n");
+    font = al_load_font("examples/graphicChat/Resource/font/Minecraft.ttf", 68, 0);
+    if (!font){
+        
         return false;
     }
 
     return true;
 }
-
+bool loadMusic()
+{
+    
+    if (!al_reserve_samples(5)){
+       printf("Erro na musica2");
+        return false;
+    }
+    musica = al_load_audio_stream("examples/graphicChat/Resource/Music/Interestelar_music.ogg", 4, 1024);
+    if (!musica)
+    {
+        printf("Erro na musica1");
+        return false;
+    }
+    al_attach_audio_stream_to_mixer(musica, al_get_default_mixer());
+    //define que o stream vai tocar no modo repeat
+    al_set_audio_stream_playmode(musica, ALLEGRO_PLAYMODE_LOOP);
+    return true;
+}
 
 //MODIFY THIS TO LOAD YOUR OWN GRAPHICS (BITMAP POINTERS ARE DEFINED AT ACORE.H)
 bool loadGraphics()
 {
-    menuScreen = al_load_bitmap("examples/graphicChat/Resources/Etc/titleScreen2.png");
-    if (!menuScreen)
-    {
-        fprintf(stderr, "Falha carregando menuScreen\n");
+    astrBR = al_load_bitmap("examples/graphicChat/Resource/skins/AstrounautaBR.png");
+    if (!astrBR){
+        
         return false;
     }
-
-    objects = al_load_bitmap("examples/graphicChat/Resources/Tilesets/objects.png");
-    if (!objects){
-        fprintf(stderr, "Falha carregando objects.png\n");
+    astrURSS = al_load_bitmap("examples/graphicChat/Resource/skins/AstrounautinhaURSS.png");
+    if (!astrURSS){
         return false;
     }
-
+    astrMessi = al_load_bitmap("examples/graphicChat/Resource/skins/AstrounautaARGENTINA.png");
+    if (!astrMessi){
+        return false;
+    }
+    astrDefault = al_load_bitmap("examples/graphicChat/Resource/skins/Astrounautinha.png");
+    if (!astrDefault){
+        return false;
+    }
+    
+    backgroundCharacter = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/EscolhaPersonagem_background.png");
+    if (!backgroundCharacter){
+        return false;
+    }
+    backgroundHistoria = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/Game_Hist.png");
+    if (!backgroundHistoria){
+        return false;
+    }
+    backgroundTutorial = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/Game_Tutorial.png");
+    if (!backgroundTutorial){
+        return false;
+    }
+    // Alocamos o retângulo central da tela
+    background = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/spacebackground_MENU2.jpg");
+    if (!background){
+        return false;
+    }
+     backgroundIP = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/DigiteIP_background.png");
+    if (!background){
+        return false;
+    }
+    backgroundLogin = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/DigiteLogin_background.png");
+    if (!background){
+        return false;
+    }
+ 
+    // Alocamos o botão para fechar a aplicação
+    botao_sair = al_load_bitmap("examples/graphicChat/Resource/objects/botao_SAIR.png");
+    if (!botao_sair){
+        return false;
+    }
+    botao_historia = al_load_bitmap("examples/graphicChat/Resource/objects/botao_HISTORIA.png");
+    if (!botao_historia){
+        return false;
+    }
+    botao_tutorial = al_load_bitmap("examples/graphicChat/Resource/objects/botao_TUTORIAL.png");
+    if (!botao_tutorial){
+        return false;
+    }
+    botao_jogar = al_load_bitmap("examples/graphicChat/Resource/objects/botao_JOGAR.png");
+    if (!botao_jogar){
+        return false;
+    }
     return true;
 }

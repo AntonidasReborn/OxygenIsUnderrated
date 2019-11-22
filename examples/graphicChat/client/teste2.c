@@ -1,12 +1,11 @@
 // Os arquivos de cabeçalho
+#include "ACore.h"
+#include "client.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
-#include <allegro5/allegro.h>
-#include <allegro5/allegro_native_dialog.h>
-#include <allegro5/allegro_image.h> 
-#include <allegro5/allegro_audio.h>
-#include <allegro5/allegro_acodec.h>
-#include <allegro5/allegro_font.h>
-#include <allegro5/allegro_ttf.h>
 // Atributos da tela
 #define LARGURA_TELA 800
 #define ALTURA_TELA 600
@@ -18,208 +17,51 @@
 #define LOGIN_MAX_SIZE 13
 
 
-void error_msg(char *text){
-	al_show_native_message_box(NULL,"ERRO",
-		"Ocorreu o seguinte erro e o programa sera finalizado:",
-		text,NULL,ALLEGRO_MESSAGEBOX_ERROR);
-}
+
  
 int main(void){
+    
+     
     char ServerIP[30] = {"127.0.0.1"};
     //Salva o login
     char loginMsg[BUFFER_SIZE]={0};
-    ALLEGRO_DISPLAY *janela = NULL;
-    ALLEGRO_FONT *font = NULL;
-    ALLEGRO_EVENT_QUEUE *fila_eventos = NULL;
-    ALLEGRO_BITMAP *botao_sair = NULL, *botao_jogar=NULL,*botao_historia=NULL,*botao_tutorial=NULL,*area_central=0;
-    ALLEGRO_BITMAP *background =NULL,*backgroundHistoria=NULL,*backgroundTutorial=NULL,*backgroundIP=NULL,*backgroundLogin=NULL,*backgroundCharacter=NULL;
-    ALLEGRO_BITMAP *imagem =NULL;
-    ALLEGRO_BITMAP *astrURSS=NULL,*astrBR=NULL,*astrMessi=NULL,*astrDefault=NULL;
-    ALLEGRO_AUDIO_STREAM *musica =NULL;
+    
     // Flag que condicionará nosso looping
     int sair = 0,historia = 0,tutorial=0,jogar=0,telaIp=0,telaLogin=0,telaCharacter=0;
-    if(!al_install_audio()){
-        error_msg("Falha ao inicializar o audio");
-        return 0;
-    }
+    if (!coreInit()){
+        return -1;
+	}
+    //Agora vamos criar a nossa janela. Largura e Altura em pixels, o título é uma string.
+    if (!windowInit(LARGURA_TELA, ALTURA_TELA, "OxygenIsUnderrated")){
+	    return -1;
+	}
+    //Agora inicializamos nosso teclado e mouse, para que a janela responda às entradas deles
+    if (!inputInit()){
+		printf("Erro no teclado");
+        return -1;
+	}
+    //Agora inicializamos nossas fontes
+    if(!fontInit()){
+      return -1;
+	}
+    if(!loadMusic()){
+        return -1;
+	}
+    //E por fim todas as imagens que vamos utilizar no programa.
+    if(!loadGraphics()){
+        return -1;
+	}
+    
+    
+    
+    
+    
+    
  
     //addon que da suporte as extensoes de audio
-    if(!al_init_acodec_addon()){
-        error_msg("Falha ao inicializar o codec de audio");
-        return 0;
-    }
-    if (!al_init()){
-        error_msg("Falha ao inicializar a Allegro");
-        return -1;
-    }
-    if (!al_init_image_addon()){
-        error_msg("Falha ao inicializar imagem");
-        return -1;
-    }
-    if (!al_reserve_samples(5)){
-        error_msg("Falha ao reservar amostrar de audio");
-        return 0;
-    }
     
-    al_init_font_addon();
-
-    if (!al_init_ttf_addon()){
-        error_msg("Falha ao inicializar add-on allegro_ttf");
-        return -1;
-    }
-    janela = al_create_display(LARGURA_TELA, ALTURA_TELA);
-    if (!janela){
-        error_msg("Falha ao criar janela");
-        return -1;
-    }
-    font = al_load_font("examples/graphicChat/Resource/font/Minecraft.ttf", 68, 0);
-    if (!font){
-        al_destroy_display(janela);
-        error_msg("Falha ao carregar fonte");
-        return -1;
-    }
     
-    // Configura o título da janela
-    al_set_window_title(janela, "Oxygen Is Underrated");
- 
-    // Torna apto o uso de mouse na aplicação
-    if (!al_install_mouse()){
-        error_msg("Falha ao inicializar o mouse");
-        al_destroy_display(janela);
-        return -1;
-    }
-    if (!al_install_keyboard())
-  {
-    error_msg("Falha ao inicializar o teclado.\n");
-    al_destroy_display(janela);
-    return -1;
-  }
- 
-    // Atribui o cursor padrão do sistema para ser usado
-    if (!al_set_system_mouse_cursor(janela, ALLEGRO_SYSTEM_MOUSE_CURSOR_DEFAULT)){
-        error_msg("Falha ao atribuir ponteiro do mouse");
-        al_destroy_display(janela);
-        return -1;
-    }
-    astrBR = al_load_bitmap("examples/graphicChat/Resource/skins/AstrounautaBR.png");
-    if (!astrBR){
-        error_msg("Falha ao criar bitmap");
-        al_destroy_display(janela);
-        return -1;
-    }
-    astrURSS = al_load_bitmap("examples/graphicChat/Resource/skins/AstrounautinhaURSS.png");
-    if (!astrURSS){
-        error_msg("Falha ao criar bitmap");
-        al_destroy_display(janela);
-        return -1;
-    }
-    astrMessi = al_load_bitmap("examples/graphicChat/Resource/skins/AstrounautaARGENTINA.png");
-    if (!astrMessi){
-        error_msg("Falha ao criar bitmap");
-        al_destroy_display(janela);
-        return -1;
-    }
-    astrDefault = al_load_bitmap("examples/graphicChat/Resource/skins/Astrounautinha.png");
-    if (!astrDefault){
-        error_msg("Falha ao criar bitmap");
-        al_destroy_display(janela);
-        return -1;
-    }
     
-    backgroundCharacter = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/EscolhaPersonagem_background.png");
-    if (!backgroundCharacter){
-        error_msg("Falha ao criar bitmap");
-        al_destroy_display(janela);
-        return -1;
-    }
-    backgroundHistoria = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/Game_Hist.png");
-    if (!backgroundHistoria){
-        error_msg("Falha ao criar bitmap");
-        al_destroy_display(janela);
-        return -1;
-    }
-    backgroundTutorial = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/Game_Tutorial.png");
-    if (!backgroundTutorial){
-        error_msg("Falha ao criar bitmap");
-        al_destroy_display(janela);
-        return -1;
-    }
-    // Alocamos o retângulo central da tela
-    background = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/spacebackground_MENU2.jpg");
-    if (!background){
-        error_msg("Falha ao criar bitmap");
-        al_destroy_display(janela);
-        return -1;
-    }
-     backgroundIP = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/DigiteIP_background.png");
-    if (!background){
-        error_msg("Falha ao criar bitmap");
-        al_destroy_display(janela);
-        return -1;
-    }
-    backgroundLogin = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/DigiteLogin_background.png");
-    if (!background){
-        error_msg("Falha ao criar bitmap");
-        al_destroy_display(janela);
-        return -1;
-    }
- 
-    // Alocamos o botão para fechar a aplicação
-    botao_sair = al_load_bitmap("examples/graphicChat/Resource/objects/botao_SAIR.png");
-    if (!botao_sair){
-        error_msg("Falha ao criar botão de saída");
-        al_destroy_bitmap(area_central);
-        al_destroy_display(janela);
-        return -1;
-    }
-    botao_historia = al_load_bitmap("examples/graphicChat/Resource/objects/botao_HISTORIA.png");
-    if (!botao_historia){
-        error_msg("Falha ao criar botao_historia");
-        al_destroy_bitmap(area_central);
-        al_destroy_display(janela);
-        return -1;
-    }
-    botao_tutorial = al_load_bitmap("examples/graphicChat/Resource/objects/botao_TUTORIAL.png");
-    if (!botao_tutorial){
-        error_msg("Falha ao criar botao_tutorial");
-        al_destroy_bitmap(area_central);
-        al_destroy_display(janela);
-        return -1;
-    }
-    botao_jogar = al_load_bitmap("examples/graphicChat/Resource/objects/botao_JOGAR.png");
-    if (!botao_jogar){
-        error_msg("Falha ao criar botao_jogar");
-        al_destroy_bitmap(area_central);
-        al_destroy_display(janela);
-        return -1;
-    }
-    musica = al_load_audio_stream("examples/graphicChat/Resource/Music/Interestelar_music.ogg", 4, 1024);
-    if (!musica)
-    {
-        error_msg( "Audio nao carregado" );
-        
-        
-        return 0;
-    }
-    if (!al_reserve_samples(5)){
-        error_msg("Falha ao reservar amostrar de audio");
-        return 0;
-    }
-
-    //liga o stream no mixer
-    al_attach_audio_stream_to_mixer(musica, al_get_default_mixer());
-    //define que o stream vai tocar no modo repeat
-    al_set_audio_stream_playmode(musica, ALLEGRO_PLAYMODE_LOOP);
-    fila_eventos = al_create_event_queue();
-    if (!fila_eventos){
-        error_msg("Falha ao inicializar o fila de eventos");
-        al_destroy_display(janela);
-        return -1;
-    }
- 
-    // Dizemos que vamos tratar os eventos vindos do mouse
-    al_register_event_source(fila_eventos, al_get_mouse_event_source());
-    al_register_event_source(fila_eventos, al_get_keyboard_event_source());
  
     // Flag indicando se o mouse está sobre o retângulo central
     int botaoSair = 0,botaoJogar = 0,botaoTutorial = 0,botaoHistoria = 0;

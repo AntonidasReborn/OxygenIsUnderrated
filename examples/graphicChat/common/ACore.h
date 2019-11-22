@@ -6,6 +6,9 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_acodec.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_native_dialog.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <math.h>
@@ -13,22 +16,20 @@
 #include <string.h>
 
 #define FPS 60
-#define WIDTH  640
-#define HEIGHT 480
+#define WIDTH  800
+#define HEIGHT 600
 #define IP_MAX_SIZE 100
 
 double startingTime;
 
-ALLEGRO_DISPLAY *main_window;
-ALLEGRO_EVENT_QUEUE *eventsQueue;
-
-//========================
-//FONT AND BITMAP POINTERS
-ALLEGRO_FONT *ubuntu;
-ALLEGRO_FONT *start;
-
-ALLEGRO_BITMAP *objects;
-ALLEGRO_BITMAP *menuScreen;
+    ALLEGRO_DISPLAY *janela;
+    ALLEGRO_FONT *font;
+    ALLEGRO_EVENT_QUEUE *fila_eventos;
+    ALLEGRO_BITMAP *botao_sair, *botao_jogar,*botao_historia,*botao_tutorial;
+    ALLEGRO_BITMAP *background,*backgroundHistoria,*backgroundTutorial,*backgroundIP,*backgroundLogin,*backgroundCharacter;
+    ALLEGRO_BITMAP *imagem ;
+    ALLEGRO_BITMAP *astrURSS,*astrBR,*astrMessi,*astrDefault;
+    ALLEGRO_AUDIO_STREAM *musica;
 //========================
 //========================
 
@@ -54,7 +55,7 @@ void FPSLimit();
 //RESOURCE LOADING FUNCTIONS
 bool loadGraphics();
 bool fontInit();
-
+bool loadMusic();
 //INPUT READING FUNCTION
 void readInput(ALLEGRO_EVENT event, char str[], int limit);
 
