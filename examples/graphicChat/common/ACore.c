@@ -251,6 +251,10 @@ bool loadGraphics()
     if (!backgroundTutorial){
         return false;
     }
+    backgroundNave = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/spacebackground_MENU.jpg");
+    if (!backgroundNave){
+        return false;
+    }
     // Alocamos o retângulo central da tela
     background = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/spacebackground_MENU2.jpg");
     if (!background){

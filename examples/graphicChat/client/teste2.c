@@ -41,7 +41,7 @@ typedef struct Player{
 	Pos posicao; //posicao (x,y) 
 }Player;
 
- Player defaultPlayer(int id_player){
+Player defaultPlayer(int id_player){
   Player temp;
   temp.id = id_player;
   temp.oxigenio=MAX_HP; 
@@ -81,7 +81,7 @@ void clearListPlayers(Player * lista_jogadores){
   }
 }
 
-
+Player lista_jogadores[MAX_CLIENTS];
 
 void printPlayer(Player one){
   printf("Id: %d\n", one.id);
@@ -132,17 +132,28 @@ void assertConnection(char IP[], char login[]) {
   sendMsgToServer(login, len + 1);
   recvMsgFromServer(&meu_id, WAIT_FOR_IT);
 }
-
-
+void printWaitroom(){
+	al_draw_bitmap(backgroundNave,0,0,0);
+	al_draw_text(font, al_map_rgb(255, 255, 255), LARGURA_TELA / 2, ALTURA_TELA/2, ALLEGRO_ALIGN_CENTRE, "ESPERANDO OS JOGADORES\n SE CONECTAREM");
+} 
+int playersReady(Player * playerList){
+	int i, ready = 0;
+	for(i=0;i<MAX_CLIENTS;i++){
+		if(strcmp(playerList[i].login,"")!=0){
+			ready++;
+		}
+	}
+	return ready;
+}
 int main(void){
     
-     
+    clearListPlayers(lista_jogadores);
     char ServerIP[30] = {"127.0.0.1"};
     //Salva o login
     char loginMsg[BUFFER_SIZE]={0};
     
     // Flag que condicionará nosso looping
-    int sair = 0,historia = 0,tutorial=0,jogar=0,telaIp=0,telaLogin=0,telaCharacter=0;
+    int sair = 0,historia = 0,tutorial=0,jogar=0,telaIp=0,telaLogin=0,telaCharacter=0,telaEspera=0;
     if (!coreInit()){
         return -1;
 	}
@@ -180,7 +191,8 @@ int main(void){
  
     // Flag indicando se o mouse está sobre o retângulo central
     int botaoSair = 0,botaoJogar = 0,botaoTutorial = 0,botaoHistoria = 0;
-    while (!sair){        // Verificamos se há eventos na fila
+    while (!sair){
+        startTimer();        // Verificamos se há eventos na fila
         while (!al_is_event_queue_empty(fila_eventos)){
             ALLEGRO_EVENT evento;
             al_wait_for_event(fila_eventos, &evento);
@@ -246,10 +258,11 @@ int main(void){
             }
         }
         while(jogar==1){
+            startTimer();
             while (!al_is_event_queue_empty(fila_eventos)){
             ALLEGRO_EVENT evento;
             al_wait_for_event(fila_eventos, &evento);
-             readInput(evento,ServerIP,20);
+            readInput(evento,ServerIP,LOGIN_MAX_SIZE);
             if(evento.type == ALLEGRO_EVENT_KEY_DOWN){
                 switch (evento.keyboard.keycode){
                     case ALLEGRO_KEY_ENTER:
@@ -348,6 +361,10 @@ int main(void){
 								personagem_exibido+=4;
 							}
                         break;
+                    case ALLEGRO_KEY_ENTER:
+                        telaEspera=1;
+                        telaCharacter=0;
+                        break;
                     
                         
                 }
@@ -385,6 +402,34 @@ int main(void){
         }
          al_flip_display();    
     }
+     if(telaEspera){
+			assertConnection(ServerIP, loginMsg);
+			sendMsgToServer((void*)&personagem_exibido, sizeof(personagem_exibido));
+			printWaitroom();
+			al_flip_display();
+		}
+		while(telaEspera){
+			int ret = recvMsgFromServer(lista_jogadores, DONT_WAIT);
+		    if (ret == SERVER_DISCONNECTED) {
+		      return -1;
+		    } else if (ret != NO_MESSAGE) {
+		    	int ready = playersReady(lista_jogadores);
+				printf("[[%d]]",ready);
+				if(ready == MAX_CLIENTS){
+					telaEspera = 0;
+				}
+		    }
+			while(!al_is_event_queue_empty(fila_eventos)){
+	            
+	            ALLEGRO_EVENT evento;
+	            al_wait_for_event(fila_eventos, &evento);
+
+	            if(evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
+					
+	                sair = 0;
+	            }
+	        }
+		}
      while(tutorial==1){
             while (!al_is_event_queue_empty(fila_eventos)){
             ALLEGRO_EVENT evento;
