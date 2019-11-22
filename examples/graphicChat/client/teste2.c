@@ -6,19 +6,134 @@
 #include <string.h>
 #include <ctype.h>
 
+#define NENHUM 'p'
+#define ESQUERDA 'a'
+#define DIREITA 'd'
+#define CIMA 'w'
+#define BAIXO 's'
 // Atributos da tela
 #define LARGURA_TELA 800
 #define ALTURA_TELA 600
+
 #define BUFFER_SIZE 100
+#define MAX_HP 300
+#define MAX_CLIENTS 3
 #define ASTRBR 1
 #define ASTRURSS 2
 #define ASTRMESSI 3
 #define ASTRDEFAULT 4
+
 #define LOGIN_MAX_SIZE 13
 
+typedef struct Pos{
+        int x, y; //posicao (x,y) que o boi está
+}Pos;
+
+typedef struct Player{
+    int id; //numero no intervalo [0,MAX_CLIENTS)
+    int oxigenio; //numero entre [0,MAX_HP]
+    char movimento; // NENHUM, DIREITA, ESQUERDA, CIMA, BAIXO
+    char login[LOGIN_MAX_SIZE];
+	char estado;
+    char personagem; //é um personagem de define igual BOI_X, em que X está no intervalo [1,4]
+    char direcao; //direcao que o astronauta ta
+	char direcao2;
+	Pos posicao; //posicao (x,y) 
+}Player;
+
+ Player defaultPlayer(int id_player){
+  Player temp;
+  temp.id = id_player;
+  temp.oxigenio=MAX_HP; 
+  temp.movimento=NENHUM;
+  strcpy(temp.login,"");
+  temp.estado = DIREITA;
+  temp.personagem=ASTRBR;
+  
+  switch(id_player){
+    case 0:
+      temp.posicao.x=3;
+      temp.posicao.y=3;
+	  break;
+    case 1:
+      temp.posicao.x=22;
+      temp.posicao.y=3;
+	  break;
+    case 2:
+      temp.posicao.x=3;
+      temp.posicao.y=9;
+	  break;
+    case 3:
+      temp.posicao.x=22;
+      temp.posicao.y=9;
+	  break;
+  }
+  temp.direcao = DIREITA;
+  temp.direcao = BAIXO;
+  return temp;
+}
 
 
- 
+void clearListPlayers(Player * lista_jogadores){
+  int i;
+  for(i=0;i<MAX_CLIENTS;i++){
+    lista_jogadores[i] = defaultPlayer(i);
+  }
+}
+
+
+
+void printPlayer(Player one){
+  printf("Id: %d\n", one.id);
+  printf("oxigenio: %d\n", one.oxigenio);
+  printf("Movimento: %c\n", one.movimento);
+  printf("Login: %s\n", one.login);
+  printf("Personagem: %d\n", one.personagem);
+  printf("X: %d\n", one.posicao.x);
+  printf("Y: %d\n", one.posicao.y);
+  printf("Direcao: %c\n", one.direcao);
+}
+
+int meu_id;
+
+enum conn_ret_t tryConnect(char IP[]) {
+  char server_ip[30];
+  //printf("Please enter the server IP: ");
+  //scanf(" %s", server_ip);
+  //getchar();
+  return connectToServer(IP);
+}
+void assertConnection(char IP[], char login[]) {
+  //printHello();
+  enum conn_ret_t ans = tryConnect(IP);
+
+  while (ans != SERVER_UP) 
+  {
+    if (ans == SERVER_DOWN) {
+      puts("Server is down!");
+    } else if (ans == SERVER_FULL) {
+      puts("Server is full!");
+    } else if (ans == SERVER_CLOSED) {
+      puts("Server is closed for new connections!");
+    } else {
+      puts("Server didn't respond to connection!");
+    }
+    printf("Want to try again? [Y/n] ");
+    int res;
+    while (res = tolower(getchar()), res != 'n' && res != 'y' && res != '\n'){
+      puts("anh???");
+    }
+    if (res == 'n') {
+      exit(EXIT_SUCCESS);
+    }
+    ans = tryConnect(IP);
+  }
+  int len = (int)strlen(login);
+  sendMsgToServer(login, len + 1);
+  recvMsgFromServer(&meu_id, WAIT_FOR_IT);
+}
+
+
 int main(void){
     
      
