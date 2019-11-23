@@ -598,9 +598,9 @@ int main(void){
 	    	al_draw_bitmap(backgroundGameplay, LARGURA_TELA - al_get_bitmap_width(backgroundGameplay),
             ALTURA_TELA  - al_get_bitmap_height(backgroundGameplay), 0);
 	    	printPlayers(lista_jogadores);
-            if(achou){
-               printOxygen();
-            }            
+            //if(achou){
+               //printOxygen();
+            //}            
 	    	al_flip_display();
 	    	al_clear_to_color(al_map_rgb(0, 0, 0));
 
