@@ -205,7 +205,7 @@ void printOxygen(){
     Pos cristal;
     cristal.x=rand()%18;
     cristal.y=rand()%25;
-    al_draw_bitmap(oxigenio,0,0,0);
+    al_draw_bitmap(oxigenio,cristal.x*32,cristal.y*32,0);
 
 }	
 
@@ -560,6 +560,9 @@ int main(void){
 					fecha();
 				}
                 if(evento.type == ALLEGRO_EVENT_TIMER){
+                    int ret;
+                    lista_jogadores[meu_id].oxigenio-=50;
+                    ret = sendMsgToServer((void *)lista_jogadores, sizeof(Player)*MAX_CLIENTS);
                     achou=1;
                 }
 			}
