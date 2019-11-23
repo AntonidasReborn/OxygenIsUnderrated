@@ -265,6 +265,7 @@ int main(void){
     
     // Flag que condicionará nosso looping
     int sair = 0,historia = 0,tutorial=0,jogar=0,telaIp=0,telaLogin=0,telaCharacter=0,telaEspera=0,telaGameplay=0;
+    int teladVit=0,teladDer=0;
     if (!coreInit()){
         return -1;
 	}
@@ -453,7 +454,8 @@ int main(void){
              al_draw_bitmap(backgroundHistoria, LARGURA_TELA - al_get_bitmap_width(backgroundHistoria),
         ALTURA_TELA  - al_get_bitmap_height(backgroundHistoria), 0);
          
-        al_flip_display();    
+        al_flip_display(); 
+           
     }
     int personagem_exibido = ASTRBR;
      while(telaCharacter==1){
@@ -621,10 +623,12 @@ int main(void){
 		    }
 
 			if(strcmp(lista_jogadores[meu_id].login,"")==0){
-				
+				telaGameplay=0;
+                teladDer=1;
 			}
 			else if(playersReady(lista_jogadores) == 1){
-				
+				telaGameplay=0;
+                teladVit=1;
 			}
             int index;
                     index = procura(lista_jogadores);
@@ -678,6 +682,44 @@ int main(void){
         }
              al_draw_bitmap(backgroundTutorial, LARGURA_TELA - al_get_bitmap_width(backgroundTutorial),
         ALTURA_TELA  - al_get_bitmap_height(backgroundTutorial), 0);
+         
+         al_flip_display();    
+    }
+    while(teladDer==1){
+            while (!al_is_event_queue_empty(fila_eventos)){
+            ALLEGRO_EVENT evento;
+            al_wait_for_event(fila_eventos, &evento);
+            if(evento.type == ALLEGRO_EVENT_KEY_DOWN){
+                switch (evento.keyboard.keycode){
+                    case ALLEGRO_KEY_ENTER:
+                        =0;
+                }
+            }
+            if(evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
+                    fecha();
+	            }
+        }
+             al_draw_bitmap(telaDerrota, LARGURA_TELA - al_get_bitmap_width(telaDerrota),
+        ALTURA_TELA  - al_get_bitmap_height(telaDerrota), 0);
+         
+         al_flip_display();    
+    }
+    while(teladVit==1){
+            while (!al_is_event_queue_empty(fila_eventos)){
+            ALLEGRO_EVENT evento;
+            al_wait_for_event(fila_eventos, &evento);
+            if(evento.type == ALLEGRO_EVENT_KEY_DOWN){
+                switch (evento.keyboard.keycode){
+                    case ALLEGRO_KEY_ENTER:
+                        tutorial=0;
+                }
+            }
+            if(evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
+                    fecha();
+	            }
+        }
+             al_draw_bitmap(telaVitoria, LARGURA_TELA - al_get_bitmap_width(telaVitoria),
+        ALTURA_TELA  - al_get_bitmap_height(telaVitoria), 0);
          
          al_flip_display();    
     }

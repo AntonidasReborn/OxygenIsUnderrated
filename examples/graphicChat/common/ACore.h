@@ -30,7 +30,7 @@ double startingTime;
     ALLEGRO_BITMAP *background,*backgroundHistoria,*backgroundTutorial,*backgroundIP,*backgroundLogin,*backgroundCharacter;
     ALLEGRO_BITMAP *imagem ,*backgroundNave,*backgroundGameplay;
     ALLEGRO_BITMAP *astrURSS,*astrBR,*astrMessi,*astrDefault,*astrURSSL,*astrURSSR,*astrBRL,*astrBRR;
-    ALLEGRO_BITMAP *astrMessiL,*astrMessiR,*astrDefaultL,*astrDefaultR,*oxigenio;
+    ALLEGRO_BITMAP *astrMessiL,*astrMessiR,*astrDefaultL,*astrDefaultR,*oxigenio,*telaDerrota,*telaVitoria;
     ALLEGRO_AUDIO_STREAM *musica;
 //========================
 //========================

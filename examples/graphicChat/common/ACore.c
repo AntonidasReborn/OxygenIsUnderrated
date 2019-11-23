@@ -227,6 +227,17 @@ bool loadMusic()
 //MODIFY THIS TO LOAD YOUR OWN GRAPHICS (BITMAP POINTERS ARE DEFINED AT ACORE.H)
 bool loadGraphics()
 {
+    telaDerrota = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/tela_vitoria.png");
+    if(!telaDerrota){
+        return false;
+    }
+     telaVitoria = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/tela_derrota.png");
+    if(!telaVitoria){
+        return false;
+    }
+    
+    
+    
     oxigenio = al_load_bitmap("examples/graphicChat/Resource/objects/oxigenio_size-32x32.png");
     if (!oxigenio){
         
