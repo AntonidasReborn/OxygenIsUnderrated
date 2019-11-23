@@ -93,6 +93,8 @@ void clearListPlayers(Player * lista_jogadores){
 
 Player lista_jogadores[MAX_CLIENTS];
 
+Pos oxygen;
+
 void printPlayer(Player one){
   printf("Id: %d\n", one.id);
   printf("oxigenio: %d\n", one.oxigenio);
@@ -138,7 +140,9 @@ void assertConnection(char IP[], char login[]) {
     }
     ans = tryConnect(IP);
   }
-  int len = (int)strlen(login);
+  int 
+  
+  len = (int)strlen(login);
   sendMsgToServer(login, len + 1);
   recvMsgFromServer(&meu_id, WAIT_FOR_IT);
 }
@@ -160,6 +164,9 @@ int playersReady(Player * playerList){
 	}
 	return ready;
 }
+
+
+
 void printGameCharacter(int astr, float largura, float altura, char estado, char direcao, char direcao2){
 	if(estado == DIREITA){
 		switch(astr){
@@ -231,6 +238,14 @@ void printPlayers(Player * lista_jogadores){
                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
+void dropaoxigenio(){
+
+    oxygen.x = rand()%18;
+    oxygen.y = rand()%25;
+    matriz[oxygen.x][oxygen.y] = 5;
+    al_draw_bitmap(oxigenio, (oxygen.x *32) +24, (oxygen.y) *32, 0); 
+
+}
 
 int main(void){
     
@@ -534,7 +549,8 @@ int main(void){
                 achou=0;
 				al_wait_for_event(fila_eventos, &evento);
 				if (evento.type == ALLEGRO_EVENT_KEY_DOWN){
-					switch(evento.keyboard.keycode){
+					dropaoxigenio();
+                    switch(evento.keyboard.keycode){
 						int ret;
 						case ALLEGRO_KEY_DOWN:
 							lista_jogadores[meu_id].movimento = BAIXO;
@@ -568,6 +584,11 @@ int main(void){
 							break;
 						
 					}
+                    int index;
+                    index = procura(lista_jogadores);
+                    if (index != -1){
+                        lista_jogadores[index].oxigenio += 50;
+                    }
                     
                     int ret = sendMsgToServer((void *)lista_jogadores, sizeof(Player)*MAX_CLIENTS);
                     
