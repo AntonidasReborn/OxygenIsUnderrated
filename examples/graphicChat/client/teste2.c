@@ -133,9 +133,14 @@ void assertConnection(char IP[], char login[]) {
   recvMsgFromServer(&meu_id, WAIT_FOR_IT);
 }
 void printWaitroom(){
-	al_draw_bitmap(backgroundNave,0,0,0);
-	al_draw_text(font, al_map_rgb(255, 255, 255), LARGURA_TELA / 2, ALTURA_TELA/2, ALLEGRO_ALIGN_CENTRE, "ESPERANDO OS JOGADORES\n SE CONECTAREM");
-} 
+	al_draw_bitmap(backgroundNave, 0,0, 0);
+    al_draw_text(font, al_map_rgb(255, 255, 255), LARGURA_TELA- al_get_font_ascent(font)-340,
+                     ALTURA_TELA - al_get_font_ascent(font)-490,
+                     ALLEGRO_ALIGN_CENTRE, "ESPERANDO");
+    al_draw_text(font, al_map_rgb(255, 255, 255), LARGURA_TELA- al_get_font_ascent(font)-340,
+                     ALTURA_TELA - al_get_font_ascent(font)-400,
+                     ALLEGRO_ALIGN_CENTRE, "JOGADORES");
+    } 
 int playersReady(Player * playerList){
 	int i, ready = 0;
 	for(i=0;i<MAX_CLIENTS;i++){
