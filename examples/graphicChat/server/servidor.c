@@ -69,9 +69,18 @@ short int matriz[18][25] ={{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+int procura(Player *lista_jogadores){
+    int i;
+    int index = -1;
+    for (i=0;i<MAX_CLIENTS;i++){
+        if (matriz[lista_jogadores[i].posicao.x][lista_jogadores[i].posicao.y] == 5){
+            index =i;
+        }
+    }
 
+return index;
+}
 int checkPosition(int xCheck, int yCheck, Player* playerList){
   int i;
   for(i=0;i<MAX_CLIENTS;i++){

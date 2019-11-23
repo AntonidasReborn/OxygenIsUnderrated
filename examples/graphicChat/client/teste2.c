@@ -235,7 +235,6 @@ void printPlayers(Player * lista_jogadores){
                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
 void dropaoxigenio(){
@@ -246,7 +245,17 @@ void dropaoxigenio(){
     al_draw_bitmap(oxigenio, (oxygen.x *32) +24, (oxygen.y) *32, 0); 
 
 }
+int procura(Player *lista_jogadores){
+    int i;
+    int index = -1;
+    for (i=0;i<MAX_CLIENTS;i++){
+        if (matriz[lista_jogadores[i].posicao.x][lista_jogadores[i].posicao.y] == 5){
+            index =i;
+        }
+    }
 
+return index;
+}
 int main(void){
     
     clearListPlayers(lista_jogadores);
@@ -544,12 +553,12 @@ int main(void){
 	    	int achou=0;
             startTimer();
             al_start_timer(tempo);
+            
 			while(!al_is_event_queue_empty(fila_eventos)){
 				ALLEGRO_EVENT evento;
-                achou=0;
 				al_wait_for_event(fila_eventos, &evento);
 				if (evento.type == ALLEGRO_EVENT_KEY_DOWN){
-					dropaoxigenio();
+					
                     switch(evento.keyboard.keycode){
 						int ret;
 						case ALLEGRO_KEY_DOWN:
@@ -584,11 +593,7 @@ int main(void){
 							break;
 						
 					}
-                    int index;
-                    index = procura(lista_jogadores);
-                    if (index != -1){
-                        lista_jogadores[index].oxigenio += 50;
-                    }
+                    
                     
                     int ret = sendMsgToServer((void *)lista_jogadores, sizeof(Player)*MAX_CLIENTS);
                     
@@ -600,11 +605,12 @@ int main(void){
                 if(evento.type == ALLEGRO_EVENT_TIMER){
                     int ret;
                     lista_jogadores[meu_id].oxigenio-=50;
+                    dropaoxigenio();
                     ret = sendMsgToServer((void *)lista_jogadores, sizeof(Player)*MAX_CLIENTS);
-                    //achou=1;
                    
                 }
 			}
+            
             
 	        int ret = recvMsgFromServer(lista_jogadores, DONT_WAIT);
 		    if (ret == SERVER_DISCONNECTED) {
@@ -620,24 +626,40 @@ int main(void){
 			else if(playersReady(lista_jogadores) == 1){
 				
 			}
-            
-            
+            int index;
+                    index = procura(lista_jogadores);
+                    if (index != -1){
+                        lista_jogadores[index].oxigenio += 50;
+                    }
+            if(index==-1){
 	    	al_draw_bitmap(backgroundGameplay, LARGURA_TELA - al_get_bitmap_width(backgroundGameplay),
             ALTURA_TELA  - al_get_bitmap_height(backgroundGameplay), 0);
-            
-	    	printPlayers(lista_jogadores);
-            printOxygen(lista_jogadores);
+            printPlayers(lista_jogadores);
+            al_draw_bitmap(oxigenio, (oxygen.x *32) +24, (oxygen.y) *32, 0);
 	    	al_flip_display();
 	    	al_clear_to_color(al_map_rgb(0, 0, 0));
-            
+            FPSLimit();
+            }
+            else{
+            al_draw_bitmap(backgroundGameplay, LARGURA_TELA - al_get_bitmap_width(backgroundGameplay),
+            ALTURA_TELA  - al_get_bitmap_height(backgroundGameplay), 0);
+            printPlayers(lista_jogadores);
+            for(int i=0;i<18;i++){
+                for(int j=0;j<25;j++){
+                    matriz[i][j]=0;
+                }
+            }
+	    	al_flip_display();
+	    	al_clear_to_color(al_map_rgb(0, 0, 0));
+            FPSLimit(); 
+            }   
 			int i;
 			for(i=0;i<MAX_CLIENTS;i++){
 				lista_jogadores[i].estado = lista_jogadores[i].direcao;
 			}
 	    	
 	    	
-            al_flip_display();
-            FPSLimit();   
+               
 	    }
      while(tutorial==1){
             while (!al_is_event_queue_empty(fila_eventos)){
