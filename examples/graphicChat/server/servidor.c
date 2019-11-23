@@ -14,7 +14,7 @@
 
 #define BUFFER_SIZE 100
 #define MAX_HP 300
-#define MAX_CLIENTS 3
+#define MAX_CLIENTS 2
 #define ASTRBR 1
 #define ASTRURSS 2
 #define ASTRMESSI 3
@@ -36,8 +36,8 @@ typedef struct Player{
   char movimento; // NENHUM, DIREITA, ESQUERDA, CIMA, BAIXO
   char login[LOGIN_MAX_SIZE];
 	char estado;
-  char personagem; //é um personagem de define igual BOI_X, em que X está no intervalo [1,4]
-  char direcao; //direcao que o astronauta ta
+  char personagem; 
+  char direcao; 
 	char direcao2;
 	Pos posicao; //posicao (x,y) 
 }Player;
@@ -79,12 +79,12 @@ Player defaultPlayer(int id_player){
       temp.posicao.y=3;
 	  break;
     case 1:
-      temp.posicao.x=22;
-      temp.posicao.y=3;
-	  break;
-    case 2:
       temp.posicao.x=3;
       temp.posicao.y=9;
+	  break;
+    case 2:
+      temp.posicao.x=22;
+      temp.posicao.y=3;
 	  break;
     case 3:
       temp.posicao.x=22;
@@ -159,7 +159,7 @@ int main()
       if (msg_ret.status == DISCONNECT_MSG) {
         printf("%s disconnected, id = %d is free\n", lista_jogadores[msg_ret.client_id].login, msg_ret.client_id);
         lista_jogadores[msg_ret.client_id] = defaultPlayer(msg_ret.client_id);
-        broadcast(lista_jogadores, sizeof(Player)*MAX_CLIENTS);
+        //broadcast(lista_jogadores, sizeof(Player)*MAX_CLIENTS);
         connected--;
       }
     }
@@ -188,7 +188,7 @@ int main()
         }
         int i;
         for(i=0;i<MAX_CLIENTS;i++){
-          if(lista_jogadores[i].vida<=0){
+          if(lista_jogadores[i].oxigenio<=0){
             lista_jogadores[i] = defaultPlayer(i);
           }
         }

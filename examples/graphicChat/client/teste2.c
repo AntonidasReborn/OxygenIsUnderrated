@@ -56,12 +56,12 @@ Player defaultPlayer(int id_player){
       temp.posicao.y=3;
 	  break;
     case 1:
-      temp.posicao.x=22;
-      temp.posicao.y=3;
-	  break;
-    case 2:
       temp.posicao.x=3;
       temp.posicao.y=9;
+	  break;
+    case 2:
+      temp.posicao.x=22;
+      temp.posicao.y=3;
 	  break;
     case 3:
       temp.posicao.x=22;
@@ -160,9 +160,9 @@ int playersReady(Player * playerList){
 	}
 	return ready;
 }
-void printGameCharacter(int boi, float largura, float altura, char estado, char direcao, char direcao2){
+void printGameCharacter(int astr, float largura, float altura, char estado, char direcao, char direcao2){
 	if(estado == DIREITA){
-		switch(boi){
+		switch(astr){
 			case ASTRBR:
 				if(direcao2 == BAIXO) al_draw_bitmap(astrBRR, largura, altura, 0);
 				else al_draw_bitmap(astrBRR, largura, altura, 0);
@@ -181,7 +181,7 @@ void printGameCharacter(int boi, float largura, float altura, char estado, char 
 				break;
 		}
 	}else if(estado == ESQUERDA){
-		switch(boi){
+		switch(astr){
 			case ASTRBR:
 				if(direcao2 == BAIXO) al_draw_bitmap(astrBRL, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
 				else al_draw_bitmap(astrBRL, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
@@ -200,7 +200,7 @@ void printGameCharacter(int boi, float largura, float altura, char estado, char 
 				break;
 		}
 	}
-		}
+}
 	
 
 void printPlayers(Player * lista_jogadores){
@@ -209,7 +209,7 @@ void printPlayers(Player * lista_jogadores){
 	for(i=0;i<MAX_CLIENTS;i++){
 		if(strcmp(lista_jogadores[i].login,"") != 0){
 			//al_draw_filled_circle(LARGURA/22*(2*(float)lista_jogadores[i].posicao.x+1),ALTURA/22*(2*(float)lista_jogadores[i].posicao.y+1), 10, cor);
-			printGameCharacter(lista_jogadores[i].personagem,58+32*(float)lista_jogadores[i].posicao.x, 64+32*(float) lista_jogadores[i].posicao.y, lista_jogadores[i].estado, lista_jogadores[i].direcao, lista_jogadores[i].direcao2);
+			printGameCharacter(lista_jogadores[i].personagem,32*(float)lista_jogadores[i].posicao.x, 24+32*(float) lista_jogadores[i].posicao.y, lista_jogadores[i].estado, lista_jogadores[i].direcao, lista_jogadores[i].direcao2);
 		}
 	}
 }
