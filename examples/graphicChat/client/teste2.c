@@ -201,14 +201,6 @@ void printGameCharacter(int astr, float largura, float altura, char estado, char
 		}
 	}
 }
-void printOxygen(){
-    Pos cristal;
-    cristal.x=rand()%18;
-    cristal.y=rand()%25;
-    al_draw_bitmap(oxigenio,cristal.x*32,cristal.y*32,0);
-
-}	
-
 void printPlayers(Player * lista_jogadores){
 	int i;
 	//ALLEGRO_COLOR cor = al_map_rgb(255,0,0);
@@ -219,6 +211,27 @@ void printPlayers(Player * lista_jogadores){
 		}
 	}
 }
+ short int matriz[18][25] ={{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+
+
 int main(void){
     
     clearListPlayers(lista_jogadores);
@@ -518,13 +531,14 @@ int main(void){
             al_start_timer(tempo);
 			while(!al_is_event_queue_empty(fila_eventos)){
 				ALLEGRO_EVENT evento;
+                achou=0;
 				al_wait_for_event(fila_eventos, &evento);
 				if (evento.type == ALLEGRO_EVENT_KEY_DOWN){
 					switch(evento.keyboard.keycode){
 						int ret;
 						case ALLEGRO_KEY_DOWN:
 							lista_jogadores[meu_id].movimento = BAIXO;
-							ret = sendMsgToServer((void *)lista_jogadores, sizeof(Player)*MAX_CLIENTS);
+							
 							if (ret == SERVER_DISCONNECTED) {
 								return -1;
 							}
@@ -532,7 +546,7 @@ int main(void){
 						case ALLEGRO_KEY_LEFT:
 							lista_jogadores[meu_id].movimento = ESQUERDA;
 							lista_jogadores[meu_id].estado = ESQUERDA;
-							ret = sendMsgToServer((void *)lista_jogadores, sizeof(Player)*MAX_CLIENTS);
+							
 							if (ret == SERVER_DISCONNECTED) {
 								return -1;
 							}
@@ -540,20 +554,23 @@ int main(void){
 						case ALLEGRO_KEY_RIGHT:
 							lista_jogadores[meu_id].movimento = DIREITA;
 							lista_jogadores[meu_id].estado = DIREITA;
-							ret = sendMsgToServer((void *)lista_jogadores, sizeof(Player)*MAX_CLIENTS);
+							
 							if (ret == SERVER_DISCONNECTED) {
 								return -1;
 							}
 							break;
 						case ALLEGRO_KEY_UP:
 							lista_jogadores[meu_id].movimento = CIMA;
-							ret = sendMsgToServer((void *)lista_jogadores, sizeof(Player)*MAX_CLIENTS);
+							
 							if (ret == SERVER_DISCONNECTED) {
 								return -1;
 							}
 							break;
 						
 					}
+                    
+                    int ret = sendMsgToServer((void *)lista_jogadores, sizeof(Player)*MAX_CLIENTS);
+                    
 				}
 
 				if(evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
@@ -563,9 +580,11 @@ int main(void){
                     int ret;
                     lista_jogadores[meu_id].oxigenio-=50;
                     ret = sendMsgToServer((void *)lista_jogadores, sizeof(Player)*MAX_CLIENTS);
-                    achou=1;
+                    //achou=1;
+                   
                 }
 			}
+            
 	        int ret = recvMsgFromServer(lista_jogadores, DONT_WAIT);
 		    if (ret == SERVER_DISCONNECTED) {
 		      return -1;
@@ -580,31 +599,24 @@ int main(void){
 			else if(playersReady(lista_jogadores) == 1){
 				
 			}
-
+            
             
 	    	al_draw_bitmap(backgroundGameplay, LARGURA_TELA - al_get_bitmap_width(backgroundGameplay),
             ALTURA_TELA  - al_get_bitmap_height(backgroundGameplay), 0);
+            
 	    	printPlayers(lista_jogadores);
-            if(achou){
-                printOxygen();
-            }
+            printOxygen(lista_jogadores);
 	    	al_flip_display();
 	    	al_clear_to_color(al_map_rgb(0, 0, 0));
-            FPSLimit();
+            
 			int i;
 			for(i=0;i<MAX_CLIENTS;i++){
 				lista_jogadores[i].estado = lista_jogadores[i].direcao;
 			}
-	    	al_draw_bitmap(backgroundGameplay, LARGURA_TELA - al_get_bitmap_width(backgroundGameplay),
-            ALTURA_TELA  - al_get_bitmap_height(backgroundGameplay), 0);
-	    	printPlayers(lista_jogadores);
-            //if(achou){
-               //printOxygen();
-            //}            
-	    	al_flip_display();
-	    	al_clear_to_color(al_map_rgb(0, 0, 0));
-
-	    	FPSLimit();
+	    	
+	    	
+            al_flip_display();
+            FPSLimit();   
 	    }
      while(tutorial==1){
             while (!al_is_event_queue_empty(fila_eventos)){
