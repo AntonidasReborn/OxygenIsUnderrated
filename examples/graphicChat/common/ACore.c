@@ -226,19 +226,56 @@ bool loadGraphics()
         
         return false;
     }
+    astrBRR = al_load_bitmap("examples/graphicChat/Resource/skins/skins_LEFT_and_RIGHT-32x32/AstrounautaBR_LEFT.png");
+    if (!astrBRR){
+        
+        return false;
+    }
+    astrBRL = al_load_bitmap("examples/graphicChat/Resource/skins/skins_LEFT_and_RIGHT-32x32/AstrounautaBR_LEFT.png");
+    if (!astrBRL){
+        
+        return false;
+    }
     astrURSS = al_load_bitmap("examples/graphicChat/Resource/skins/AstrounautinhaURSS.png");
     if (!astrURSS){
+        return false;
+    }
+    astrURSSR = al_load_bitmap("examples/graphicChat/Resource/skins/skins_LEFT_and_RIGHT-32x32/AstrounautinhaURSS_RIGHT.png");
+    if (!astrURSSR){
+        return false;
+    }
+    astrURSSL = al_load_bitmap("examples/graphicChat/Resource/skins/skins_LEFT_and_RIGHT-32x32/AstrounautinhaURSS_LEFT.png");
+    if (!astrURSSL){
         return false;
     }
     astrMessi = al_load_bitmap("examples/graphicChat/Resource/skins/AstrounautaARGENTINA.png");
     if (!astrMessi){
         return false;
     }
+    astrMessiL = al_load_bitmap("examples/graphicChat/Resource/skins/skins_LEFT_and_RIGHT-32x32/AstrounautaARGENTINA_LEFT.png");
+    if (!astrMessiL){
+        return false;
+    }
+    astrMessiR = al_load_bitmap("examples/graphicChat/Resource/skins/skins_LEFT_and_RIGHT-32x32/AstrounautaARGENTINA_RIGHT.png");
+    if (!astrMessiR){
+        return false;
+    }
     astrDefault = al_load_bitmap("examples/graphicChat/Resource/skins/Astrounautinha.png");
     if (!astrDefault){
         return false;
     }
-    
+    astrDefaultR = al_load_bitmap("examples/graphicChat/Resource/skins/skins_LEFT_and_RIGHT-32x32/Astrounautinha_RIGHT.png");
+    if (!astrDefaultR){
+        return false;
+    }
+    astrDefaultL = al_load_bitmap("examples/graphicChat/Resource/skins/skins_LEFT_and_RIGHT-32x32/Astrounautinha_LEFT.png");
+    if (!astrDefaultL){
+        return false;
+    }
+    backgroundGameplay = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/Game_background.png");
+    if (!backgroundGameplay){
+        return false;
+    }
     backgroundCharacter = al_load_bitmap("examples/graphicChat/Resource/background/Backgrounds_800x600/EscolhaPersonagem_background.png");
     if (!backgroundCharacter){
         return false;
