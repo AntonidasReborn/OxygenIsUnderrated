@@ -631,6 +631,8 @@ int main(void){
                     if (index != -1){
                         lista_jogadores[index].oxigenio += 50;
                     }
+                    
+            al_draw_bitmap(oxigenio, (oxygen.x *32) +24, (oxygen.y) *32, 0);
             if(index==-1){
 	    	al_draw_bitmap(backgroundGameplay, LARGURA_TELA - al_get_bitmap_width(backgroundGameplay),
             ALTURA_TELA  - al_get_bitmap_height(backgroundGameplay), 0);
@@ -649,6 +651,7 @@ int main(void){
                     matriz[i][j]=0;
                 }
             }
+            
 	    	al_flip_display();
 	    	al_clear_to_color(al_map_rgb(0, 0, 0));
             FPSLimit(); 
@@ -658,9 +661,7 @@ int main(void){
 				lista_jogadores[i].estado = lista_jogadores[i].direcao;
 			}
 	    	
-	    	
-               
-	    }
+	     }	
      while(tutorial==1){
             while (!al_is_event_queue_empty(fila_eventos)){
             ALLEGRO_EVENT evento;
