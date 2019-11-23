@@ -57,6 +57,11 @@ bool coreInit()
         //fprintf(stderr, "Falha ao criar fila de eventos.\n");
         return false;
     }
+    tempo = al_create_timer( 300/ FPS);
+    if(!tempo) {
+        
+        return false;
+    }
 
  	
 
@@ -78,6 +83,7 @@ bool windowInit(int W, int H, char title[])
 
     //registra janela na fila de eventos
     al_register_event_source(fila_eventos, al_get_display_event_source(janela));
+    al_register_event_source(fila_eventos, al_get_timer_event_source(tempo));
 
     return true;
 }
@@ -221,6 +227,12 @@ bool loadMusic()
 //MODIFY THIS TO LOAD YOUR OWN GRAPHICS (BITMAP POINTERS ARE DEFINED AT ACORE.H)
 bool loadGraphics()
 {
+    oxigenio = al_load_bitmap("examples/graphicChat/Resource/objects/oxigenio_size-32x32.png");
+    if (!oxigenio){
+        
+        return false;
+    }
+    
     astrBR = al_load_bitmap("examples/graphicChat/Resource/skins/AstrounautaBR.png");
     if (!astrBR){
         

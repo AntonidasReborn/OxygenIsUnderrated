@@ -23,13 +23,14 @@
 double startingTime;
 
     ALLEGRO_DISPLAY *janela;
+    ALLEGRO_TIMER *tempo;
     ALLEGRO_FONT *font;
     ALLEGRO_EVENT_QUEUE *fila_eventos;
     ALLEGRO_BITMAP *botao_sair, *botao_jogar,*botao_historia,*botao_tutorial;
     ALLEGRO_BITMAP *background,*backgroundHistoria,*backgroundTutorial,*backgroundIP,*backgroundLogin,*backgroundCharacter;
     ALLEGRO_BITMAP *imagem ,*backgroundNave,*backgroundGameplay;
     ALLEGRO_BITMAP *astrURSS,*astrBR,*astrMessi,*astrDefault,*astrURSSL,*astrURSSR,*astrBRL,*astrBRR;
-    ALLEGRO_BITMAP *astrMessiL,*astrMessiR,*astrDefaultL,*astrDefaultR;
+    ALLEGRO_BITMAP *astrMessiL,*astrMessiR,*astrDefaultL,*astrDefaultR,*oxigenio;
     ALLEGRO_AUDIO_STREAM *musica;
 //========================
 //========================

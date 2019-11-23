@@ -201,7 +201,13 @@ void printGameCharacter(int astr, float largura, float altura, char estado, char
 		}
 	}
 }
-	
+void printOxygen(){
+    Pos cristal;
+    cristal.x=rand()%18;
+    cristal.y=rand()%25;
+    al_draw_bitmap(oxigenio,0,0,0);
+
+}	
 
 void printPlayers(Player * lista_jogadores){
 	int i;
@@ -414,6 +420,7 @@ int main(void){
     }
     int personagem_exibido = ASTRBR;
      while(telaCharacter==1){
+         startTimer();
             while (!al_is_event_queue_empty(fila_eventos)){
             ALLEGRO_EVENT evento;
             al_wait_for_event(fila_eventos, &evento);
@@ -506,7 +513,9 @@ int main(void){
 	        }
 		}
         while(telaGameplay){
-	    	startTimer();
+	    	int achou=0;
+            startTimer();
+            al_start_timer(tempo);
 			while(!al_is_event_queue_empty(fila_eventos)){
 				ALLEGRO_EVENT evento;
 				al_wait_for_event(fila_eventos, &evento);
@@ -550,6 +559,9 @@ int main(void){
 				if(evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
 					fecha();
 				}
+                if(evento.type == ALLEGRO_EVENT_TIMER){
+                    achou=1;
+                }
 			}
 	        int ret = recvMsgFromServer(lista_jogadores, DONT_WAIT);
 		    if (ret == SERVER_DISCONNECTED) {
@@ -566,13 +578,16 @@ int main(void){
 				
 			}
 
-
+            
 	    	al_draw_bitmap(backgroundGameplay, LARGURA_TELA - al_get_bitmap_width(backgroundGameplay),
             ALTURA_TELA  - al_get_bitmap_height(backgroundGameplay), 0);
 	    	printPlayers(lista_jogadores);
+            if(achou){
+                printOxygen();
+            }
 	    	al_flip_display();
 	    	al_clear_to_color(al_map_rgb(0, 0, 0));
-
+            FPSLimit();
 			int i;
 			for(i=0;i<MAX_CLIENTS;i++){
 				lista_jogadores[i].estado = lista_jogadores[i].direcao;
@@ -580,6 +595,9 @@ int main(void){
 	    	al_draw_bitmap(backgroundGameplay, LARGURA_TELA - al_get_bitmap_width(backgroundGameplay),
             ALTURA_TELA  - al_get_bitmap_height(backgroundGameplay), 0);
 	    	printPlayers(lista_jogadores);
+            if(achou){
+               printOxygen();
+            }            
 	    	al_flip_display();
 	    	al_clear_to_color(al_map_rgb(0, 0, 0));
 

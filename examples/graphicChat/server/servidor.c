@@ -147,7 +147,7 @@ int main()
       if (id_player != NO_CONNECTION) {
         char login[LOGIN_MAX_SIZE];
         recvMsgFromClient(login, id_player, WAIT_FOR_IT);
-        printf("LOGIN:::%s - id:%d conectou ao servidor\n", login, id_player);
+        printf("LOGIN->%s - id:%d conectou ao servidor\n", login, id_player);
         strcpy(lista_jogadores[id_player].login, login);
         lista_jogadores[id_player].id = id_player;
         sendMsgToClient(&id_player, sizeof(int), id_player);
@@ -159,7 +159,7 @@ int main()
       if (msg_ret.status == DISCONNECT_MSG) {
         printf("%s disconnected, id = %d is free\n", lista_jogadores[msg_ret.client_id].login, msg_ret.client_id);
         lista_jogadores[msg_ret.client_id] = defaultPlayer(msg_ret.client_id);
-        //broadcast(lista_jogadores, sizeof(Player)*MAX_CLIENTS);
+        broadcast(lista_jogadores, sizeof(Player)*MAX_CLIENTS);
         connected--;
       }
     }
