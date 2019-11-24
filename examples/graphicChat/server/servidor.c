@@ -213,7 +213,11 @@ int main()
               movePlayer(lista_jogadores, msg_ret.client_id, x, y, x, y+1);
               break;
           }
-        }
+        } int index;
+                    index = procura(lista_jogadores);
+                    if (index != -1){
+                        lista_jogadores[index].oxigenio += 50;
+                    }
         int i;
         for(i=0;i<MAX_CLIENTS;i++){
           if(lista_jogadores[i].oxigenio<=0){

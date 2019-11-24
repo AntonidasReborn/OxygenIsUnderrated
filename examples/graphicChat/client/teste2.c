@@ -265,7 +265,7 @@ int main(void){
     
     // Flag que condicionará nosso looping
     int sair = 0,historia = 0,tutorial=0,jogar=0,telaIp=0,telaLogin=0,telaCharacter=0,telaEspera=0,telaGameplay=0;
-    int teladVit=0,teladDer=0;
+    int teladVit=0,teladDer=0,telaC=0;
     if (!coreInit()){
         return -1;
 	}
@@ -623,14 +623,14 @@ int main(void){
 		    }
 
 			if(strcmp(lista_jogadores[meu_id].login,"")==0){
-				telaGameplay=0;
-                teladDer=1;
+				//telaGameplay=0;
+                //teladDer=1;
 			}
 			else if(playersReady(lista_jogadores) == 1){
-				telaGameplay=0;
-                teladVit=1;
+				//telaGameplay=0;
+                //teladVit=1;
 			}
-            int index;
+                    int index;
                     index = procura(lista_jogadores);
                     if (index != -1){
                         lista_jogadores[index].oxigenio += 50;
@@ -641,6 +641,14 @@ int main(void){
 	    	al_draw_bitmap(backgroundGameplay, LARGURA_TELA - al_get_bitmap_width(backgroundGameplay),
             ALTURA_TELA  - al_get_bitmap_height(backgroundGameplay), 0);
             printPlayers(lista_jogadores);
+           /* for(int i=0;i<18;i++){
+                for(int j=0;j<25;j++){
+                    printf("%d ",matriz[i][j]);
+                }
+                printf("\n");
+            }
+            printf("\n\n");
+            */
             al_draw_bitmap(oxigenio, (oxygen.x *32) +24, (oxygen.y) *32, 0);
 	    	al_flip_display();
 	    	al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -692,7 +700,8 @@ int main(void){
             if(evento.type == ALLEGRO_EVENT_KEY_DOWN){
                 switch (evento.keyboard.keycode){
                     case ALLEGRO_KEY_ENTER:
-                        =0;
+                        telaC=1;
+                        teladDer=0;
                 }
             }
             if(evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
@@ -711,7 +720,8 @@ int main(void){
             if(evento.type == ALLEGRO_EVENT_KEY_DOWN){
                 switch (evento.keyboard.keycode){
                     case ALLEGRO_KEY_ENTER:
-                        tutorial=0;
+                        telaC=1;
+                        teladVit=0;
                 }
             }
             if(evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
@@ -723,6 +733,27 @@ int main(void){
          
          al_flip_display();    
     }
+    while(telaC==1){
+            while (!al_is_event_queue_empty(fila_eventos)){
+            ALLEGRO_EVENT evento;
+            al_wait_for_event(fila_eventos, &evento);
+            if(evento.type == ALLEGRO_EVENT_KEY_DOWN){
+                switch (evento.keyboard.keycode){
+                    case ALLEGRO_KEY_ENTER:
+                        jogar=1;
+                        telaC=0;
+                }
+            }
+            if(evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
+                    fecha();
+	            }
+        }
+             al_draw_bitmap(telaCreditos, LARGURA_TELA - al_get_bitmap_width(telaCreditos),
+        ALTURA_TELA  - al_get_bitmap_height(telaCreditos), 0);
+         
+         al_flip_display();    
+    }
+    
         al_set_target_bitmap(al_get_backbuffer(janela));
         al_draw_bitmap(background, LARGURA_TELA - al_get_bitmap_width(background),
         ALTURA_TELA  - al_get_bitmap_height(background), 0);
