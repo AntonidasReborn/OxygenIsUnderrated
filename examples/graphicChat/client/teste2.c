@@ -623,17 +623,18 @@ int main(void){
 		    }
 
 			if(strcmp(lista_jogadores[meu_id].login,"")==0){
-				//telaGameplay=0;
-                //teladDer=1;
+				telaGameplay=0;
+                teladVit=1;
 			}
 			else if(playersReady(lista_jogadores) == 1){
-				//telaGameplay=0;
-                //teladVit=1;
+				telaGameplay=0;
+                teladDer=1;
 			}
                     int index;
                     index = procura(lista_jogadores);
                     if (index != -1){
                         lista_jogadores[index].oxigenio += 50;
+                        ret = sendMsgToServer((void *)lista_jogadores, sizeof(Player)*MAX_CLIENTS);
                     }
                     
             al_draw_bitmap(oxigenio, (oxygen.x *32) +24, (oxygen.y) *32, 0);

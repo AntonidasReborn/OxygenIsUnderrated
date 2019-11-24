@@ -57,7 +57,7 @@ bool coreInit()
         //fprintf(stderr, "Falha ao criar fila de eventos.\n");
         return false;
     }
-    tempo = al_create_timer( 300/ FPS);
+    tempo = al_create_timer( 240/ FPS);
     if(!tempo) {
         
         return false;
