@@ -107,16 +107,12 @@ Player defaultPlayer(int id_player){
       temp.posicao.y=3;
 	  break;
     case 1:
-      temp.posicao.x=3;
+      temp.posicao.x=9;
       temp.posicao.y=9;
 	  break;
     case 2:
       temp.posicao.x=22;
       temp.posicao.y=3;
-	  break;
-    case 3:
-      temp.posicao.x=22;
-      temp.posicao.y=9;
 	  break;
   }
   temp.direcao = DIREITA;
@@ -216,8 +212,9 @@ int main()
         } int index;
                     index = procura(lista_jogadores);
                     if (index != -1){
-                        lista_jogadores[index].oxigenio += 50;
+                        lista_jogadores[index].oxigenio += 60;
                     }
+        broadcast(lista_jogadores, sizeof(Player)*MAX_CLIENTS);
         int i;
         for(i=0;i<MAX_CLIENTS;i++){
           if(lista_jogadores[i].oxigenio<=0){

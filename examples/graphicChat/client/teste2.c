@@ -32,11 +32,11 @@ typedef struct Pos{
 typedef struct Player{
     int id; //numero no intervalo [0,MAX_CLIENTS)
     int oxigenio; //numero entre [0,MAX_HP]
-    char movimento; // NENHUM, DIREITA, ESQUERDA, CIMA, BAIXO
+    char movimento; // DIREITA, ESQUERDA, CIMA, BAIXO
     char login[LOGIN_MAX_SIZE];
 	char estado;
-    char personagem; //é um personagem de define igual BOI_X, em que X está no intervalo [1,4]
-    char direcao; //direcao que o astronauta ta
+    char personagem; 
+    char direcao; 
 	char direcao2;
 	Pos posicao; //posicao (x,y) 
 }Player;
@@ -56,17 +56,14 @@ Player defaultPlayer(int id_player){
       temp.posicao.y=3;
 	  break;
     case 1:
-      temp.posicao.x=3;
+      temp.posicao.x=9;
       temp.posicao.y=9;
 	  break;
     case 2:
-      temp.posicao.x=22;
-      temp.posicao.y=3;
+      temp.posicao.x=10;
+      temp.posicao.y=10;
 	  break;
-    case 3:
-      temp.posicao.x=22;
-      temp.posicao.y=9;
-	  break;
+    
   }
   temp.direcao = DIREITA;
   temp.direcao = BAIXO;
@@ -74,6 +71,28 @@ Player defaultPlayer(int id_player){
 }
 void fecha(){
     al_destroy_bitmap(botao_sair);
+    al_destroy_bitmap(backgroundIP);
+    al_destroy_bitmap(backgroundHistoria);
+    al_destroy_bitmap(backgroundCharacter);
+    al_destroy_bitmap(backgroundGameplay);
+    al_destroy_bitmap(backgroundNave);
+    al_destroy_bitmap(backgroundLogin);
+    al_destroy_timer(tempo);
+    al_destroy_bitmap(astrBR);
+    al_destroy_bitmap(astrBRR);
+    al_destroy_bitmap(astrBRL);
+    al_destroy_bitmap(astrURSS);
+    al_destroy_bitmap(astrURSSL);
+    al_destroy_bitmap(astrURSSR);
+    al_destroy_bitmap(astrMessi);
+    al_destroy_bitmap(astrMessiR);
+    al_destroy_bitmap(astrMessiL);
+    al_destroy_bitmap(astrDefault);
+    al_destroy_bitmap(astrDefaultL);
+    al_destroy_bitmap(astrDefaultR);
+    al_destroy_bitmap(telaCreditos);
+    al_destroy_bitmap(telaDerrota);
+    al_destroy_bitmap(telaVitoria);
     al_destroy_bitmap(botao_historia);
     al_destroy_bitmap(botao_jogar);
     al_destroy_bitmap(botao_tutorial);
@@ -104,6 +123,7 @@ void printPlayer(Player one){
   printf("X: %d\n", one.posicao.x);
   printf("Y: %d\n", one.posicao.y);
   printf("Direcao: %c\n", one.direcao);
+  printf("Direcao22: %c\n",one.direcao2);
 }
 
 int meu_id;
@@ -171,39 +191,39 @@ void printGameCharacter(int astr, float largura, float altura, char estado, char
 	if(estado == DIREITA){
 		switch(astr){
 			case ASTRBR:
-				if(direcao2 == BAIXO) al_draw_bitmap(astrBRR, largura, altura, 0);
-				else al_draw_bitmap(astrBRR, largura, altura, 0);
+				if(direcao2 == BAIXO) al_draw_bitmap(astrBRL, largura, altura, 0);
+				else al_draw_bitmap(astrBRL, largura, altura, 0);
 				break;
 			case ASTRDEFAULT:
-				if(direcao2 == BAIXO) al_draw_bitmap(astrDefaultR, largura, altura, 0);
-				else al_draw_bitmap(astrDefaultR, largura, altura, 0);
+				if(direcao2 == BAIXO) al_draw_bitmap(astrDefaultL, largura, altura, 0);
+				else al_draw_bitmap(astrDefaultL, largura, altura, 0);
 				break;
 			case ASTRURSS:
-				if(direcao2 == BAIXO) al_draw_bitmap(astrURSSR, largura, altura, 0);
-				else al_draw_bitmap(astrURSSR, largura, altura, 0);
+				if(direcao2 == BAIXO) al_draw_bitmap(astrURSSL, largura, altura, 0);
+				else al_draw_bitmap(astrURSSL, largura, altura, 0);
 				break;
 			case ASTRMESSI:
-				if(direcao2 == BAIXO) al_draw_bitmap(astrMessiR, largura, altura, 0);
-				else al_draw_bitmap(astrMessiR, largura, altura, 0);
+				if(direcao2 == BAIXO) al_draw_bitmap(astrMessiL, largura, altura, 0);
+				else al_draw_bitmap(astrMessiL, largura, altura, 0);
 				break;
 		}
 	}else if(estado == ESQUERDA){
 		switch(astr){
 			case ASTRBR:
-				if(direcao2 == BAIXO) al_draw_bitmap(astrBRL, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
-				else al_draw_bitmap(astrBRL, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
+				if(direcao2 == BAIXO) al_draw_bitmap(astrBRR, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
+				else al_draw_bitmap(astrBRR, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
 				break;
 			case ASTRDEFAULT:
-				if(direcao2 == BAIXO) al_draw_bitmap(astrDefaultL, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
-				else al_draw_bitmap(astrDefaultL, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
+				if(direcao2 == BAIXO) al_draw_bitmap(astrDefaultR, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
+				else al_draw_bitmap(astrDefaultR, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
 				break;
 			case ASTRURSS:
-				if(direcao2 == BAIXO) al_draw_bitmap(astrURSSL, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
-				else al_draw_bitmap(astrURSSL, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
+				if(direcao2 == BAIXO) al_draw_bitmap(astrURSSR, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
+				else al_draw_bitmap(astrURSSR, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
 				break;
 			case ASTRMESSI:
-				if(direcao2 == BAIXO) al_draw_bitmap(astrMessiL, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
-				else al_draw_bitmap(astrMessiL, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
+				if(direcao2 == BAIXO) al_draw_bitmap(astrMessiR, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
+				else al_draw_bitmap(astrMessiR, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
 				break;
 		}
 	}
@@ -242,7 +262,7 @@ void dropaoxigenio(){
     oxygen.x = rand()%18;
     oxygen.y = rand()%25;
     matriz[oxygen.x][oxygen.y] = 5;
-    al_draw_bitmap(oxigenio, (oxygen.x *32) +24, (oxygen.y) *32, 0); 
+    al_draw_bitmap(oxigenio, (oxygen.x *32), (oxygen.y *32)+24, 0); 
 
 }
 int procura(Player *lista_jogadores){
@@ -559,18 +579,18 @@ int main(void){
 			while(!al_is_event_queue_empty(fila_eventos)){
 				ALLEGRO_EVENT evento;
 				al_wait_for_event(fila_eventos, &evento);
-				if (evento.type == ALLEGRO_EVENT_KEY_DOWN){
+				if (evento.type == ALLEGRO_EVENT_KEY_CHAR){
 					
                     switch(evento.keyboard.keycode){
 						int ret;
-						case ALLEGRO_KEY_DOWN:
+						case ALLEGRO_KEY_S:
 							lista_jogadores[meu_id].movimento = BAIXO;
 							
 							if (ret == SERVER_DISCONNECTED) {
 								return -1;
 							}
 							break;
-						case ALLEGRO_KEY_LEFT:
+						case ALLEGRO_KEY_A:
 							lista_jogadores[meu_id].movimento = ESQUERDA;
 							lista_jogadores[meu_id].estado = ESQUERDA;
 							
@@ -578,7 +598,7 @@ int main(void){
 								return -1;
 							}
 							break;
-						case ALLEGRO_KEY_RIGHT:
+						case ALLEGRO_KEY_D:
 							lista_jogadores[meu_id].movimento = DIREITA;
 							lista_jogadores[meu_id].estado = DIREITA;
 							
@@ -586,7 +606,7 @@ int main(void){
 								return -1;
 							}
 							break;
-						case ALLEGRO_KEY_UP:
+						case ALLEGRO_KEY_W:
 							lista_jogadores[meu_id].movimento = CIMA;
 							
 							if (ret == SERVER_DISCONNECTED) {
@@ -623,21 +643,22 @@ int main(void){
 		    }
 
 			if(strcmp(lista_jogadores[meu_id].login,"")==0){
-				telaGameplay=0;
-                teladVit=1;
+				//telaGameplay=0;
+                //teladVit=1;
 			}
 			else if(playersReady(lista_jogadores) == 1){
-				telaGameplay=0;
-                teladDer=1;
+				//telaGameplay=0;
+                //teladDer=1;
 			}
                     int index;
                     index = procura(lista_jogadores);
                     if (index != -1){
-                        lista_jogadores[index].oxigenio += 50;
+                        lista_jogadores[index].oxigenio += 60;
                         ret = sendMsgToServer((void *)lista_jogadores, sizeof(Player)*MAX_CLIENTS);
                     }
                     
-            al_draw_bitmap(oxigenio, (oxygen.x *32) +24, (oxygen.y) *32, 0);
+           
+            al_draw_bitmap(oxigenio, (oxygen.x *32), (oxygen.y *32)+24, 0);
             if(index==-1){
 	    	al_draw_bitmap(backgroundGameplay, LARGURA_TELA - al_get_bitmap_width(backgroundGameplay),
             ALTURA_TELA  - al_get_bitmap_height(backgroundGameplay), 0);
@@ -650,8 +671,9 @@ int main(void){
             }
             printf("\n\n");
             */
-            al_draw_bitmap(oxigenio, (oxygen.x *32) +24, (oxygen.y) *32, 0);
-	    	al_flip_display();
+            
+	    	al_draw_bitmap(oxigenio, (oxygen.x *32), (oxygen.y *32)+24, 0);
+            al_flip_display();
 	    	al_clear_to_color(al_map_rgb(0, 0, 0));
             FPSLimit();
             }
