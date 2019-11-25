@@ -228,7 +228,7 @@ void printPlayers(Player * lista_jogadores){
 	for(i=0;i<MAX_CLIENTS;i++){
 		if(strcmp(lista_jogadores[i].login,"") != 0){
 			//al_draw_filled_circle(LARGURA/22*(2*(float)lista_jogadores[i].posicao.x+1),ALTURA/22*(2*(float)lista_jogadores[i].posicao.y+1), 10, cor);
-			printGameCharacter(lista_jogadores[i].personagem,32*(float)lista_jogadores[i].posicao.x, 24+32*(float) lista_jogadores[i].posicao.y, lista_jogadores[i].estado,lista_jogadores[i].direca,lista_jogadores[i].direcao2);
+			printGameCharacter(lista_jogadores[i].personagem,32*(float)lista_jogadores[i].posicao.x, 24+32*(float) lista_jogadores[i].posicao.y, lista_jogadores[i].estado,lista_jogadores[i].direcao,lista_jogadores[i].direcao2);
 		}
 	}
 }
