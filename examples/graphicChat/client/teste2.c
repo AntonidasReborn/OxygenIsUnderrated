@@ -48,7 +48,7 @@ Player defaultPlayer(int id_player){
   aux.movimento=NENHUM;
   strcpy(aux.login,"");
   aux.estado = DIREITA;
-  aux.personagem=ASTRURSS;
+  aux.personagem=ASTRBR;
   
   switch(id_player){
     case 0:

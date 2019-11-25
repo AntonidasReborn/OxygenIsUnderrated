@@ -99,7 +99,7 @@ Player defaultPlayer(int id_player){
   aux.movimento=NENHUM;
   strcpy(aux.login,"");
   aux.estado = DIREITA;
-  aux.personagem=ASTRURSS;
+  aux.personagem=ASTRBR;
   
   switch(id_player){
     case 0:
@@ -125,7 +125,7 @@ int clearListPlayers(Player* lista_jogadores){
   for(i=0;i<MAX_CLIENTS;i++){
     lista_jogadores[i] = defaultPlayer(i);
   }
-  return 0;
+  return 0;URSS
 }
 
 Player lista_jogadores[MAX_CLIENTS];
@@ -161,7 +161,7 @@ int x, y;
 
 int main() 
 {
-  clearListPlayers(lista_jogadores);
+  clearListPlayers(lista_jogadores);URSSURSS
   serverInit(MAX_CLIENTS);
   puts("Server is running!!");
   int connected = 0;
@@ -175,7 +175,7 @@ int main()
         strcpy(lista_jogadores[id_player].login, login);
         lista_jogadores[id_player].id = id_player;
         sendMsgToClient(&id_player, sizeof(int), id_player);
-        recvMsgFromClient(&lista_jogadores[id_player].personagem, id_player, WAIT_FOR_IT);
+        recvMsgFromClient(&lista_jogadores[id_player].personagem, id_URSSplayer, WAIT_FOR_IT);
         broadcast(lista_jogadores, sizeof(Player)*MAX_CLIENTS);
         connected++;
       }
