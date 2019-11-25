@@ -42,32 +42,32 @@ typedef struct Player{
 }Player;
 
 Player defaultPlayer(int id_player){
-  Player temp;
-  temp.id = id_player;
-  temp.oxigenio=MAX_HP; 
-  temp.movimento=NENHUM;
-  strcpy(temp.login,"");
-  temp.estado = DIREITA;
-  temp.personagem=ASTRBR;
+  Player aux;
+  aux.id = id_player;
+  aux.oxigenio=MAX_HP; 
+  aux.movimento=NENHUM;
+  strcpy(aux.login,"");
+  aux.estado = DIREITA;
+  aux.personagem=ASTRURSS;
   
   switch(id_player){
     case 0:
-      temp.posicao.x=3;
-      temp.posicao.y=3;
+      aux.posicao.x=3;
+      aux.posicao.y=3;
 	  break;
     case 1:
-      temp.posicao.x=9;
-      temp.posicao.y=9;
+      aux.posicao.x=9;
+      aux.posicao.y=9;
 	  break;
     case 2:
-      temp.posicao.x=10;
-      temp.posicao.y=10;
+      aux.posicao.x=10;
+      aux.posicao.y=10;
 	  break;
     
   }
-  temp.direcao = DIREITA;
-  temp.direcao = BAIXO;
-  return temp;
+  aux.direcao = DIREITA;
+  aux.direcao = BAIXO;
+  return aux;
 }
 void fecha(){
     al_destroy_bitmap(botao_sair);
@@ -114,16 +114,17 @@ Player lista_jogadores[MAX_CLIENTS];
 
 Pos oxygen;
 
-void printPlayer(Player one){
-  printf("Id: %d\n", one.id);
-  printf("oxigenio: %d\n", one.oxigenio);
-  printf("Movimento: %c\n", one.movimento);
-  printf("Login: %s\n", one.login);
-  printf("Personagem: %d\n", one.personagem);
-  printf("X: %d\n", one.posicao.x);
-  printf("Y: %d\n", one.posicao.y);
-  printf("Direcao: %c\n", one.direcao);
-  printf("Direcao22: %c\n",one.direcao2);
+void printPlayer(Player ohsheat){
+  printf("Id: %d\n", ohsheat.id);
+  printf("oxigenio: %d\n", ohsheat.oxigenio);
+  printf("Movimento: %c\n", ohsheat.movimento);
+  printf("Login: %s\n", ohsheat.login);
+  printf("Personagem: %d\n", ohsheat.personagem);
+  printf("estado: %c\n",ohsheat.estado);
+  printf("X: %d\n", ohsheat.posicao.x);
+  printf("Y: %d\n", ohsheat.posicao.y);
+  printf("Direcao: %c\n", ohsheat.direcao);
+  printf("Direcao22: %c\n",ohsheat.direcao2);
 }
 
 int meu_id;
@@ -187,43 +188,36 @@ int playersReady(Player * playerList){
 
 
 
-void printGameCharacter(int astr, float largura, float altura, char estado, char direcao, char direcao2){
+void printGameCharacter(int astr, float largura, float altura, char estado){
 	if(estado == DIREITA){
 		switch(astr){
 			case ASTRBR:
-				if(direcao2 == BAIXO) al_draw_bitmap(astrBRL, largura, altura, 0);
-				else al_draw_bitmap(astrBRL, largura, altura, 0);
+				al_draw_bitmap(astrBRL, largura, altura,   ALLEGRO_FLIP_HORIZONTAL);
 				break;
 			case ASTRDEFAULT:
-				if(direcao2 == BAIXO) al_draw_bitmap(astrDefaultL, largura, altura, 0);
-				else al_draw_bitmap(astrDefaultL, largura, altura, 0);
+				 al_draw_bitmap(astrDefaultL, largura, altura,   ALLEGRO_FLIP_HORIZONTAL);
 				break;
 			case ASTRURSS:
-				if(direcao2 == BAIXO) al_draw_bitmap(astrURSSL, largura, altura, 0);
-				else al_draw_bitmap(astrURSSL, largura, altura, 0);
+				 al_draw_bitmap(astrURSSL, largura, altura,   ALLEGRO_FLIP_HORIZONTAL);
 				break;
 			case ASTRMESSI:
-				if(direcao2 == BAIXO) al_draw_bitmap(astrMessiL, largura, altura, 0);
-				else al_draw_bitmap(astrMessiL, largura, altura, 0);
+				al_draw_bitmap(astrMessiL, largura, altura,   ALLEGRO_FLIP_HORIZONTAL);
 				break;
 		}
 	}else if(estado == ESQUERDA){
 		switch(astr){
 			case ASTRBR:
-				if(direcao2 == BAIXO) al_draw_bitmap(astrBRR, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
-				else al_draw_bitmap(astrBRR, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
+				
+				 al_draw_bitmap(astrBRR, largura, altura, 0);
 				break;
 			case ASTRDEFAULT:
-				if(direcao2 == BAIXO) al_draw_bitmap(astrDefaultR, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
-				else al_draw_bitmap(astrDefaultR, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
+				 al_draw_bitmap(astrDefaultR, largura, altura,  0);
 				break;
 			case ASTRURSS:
-				if(direcao2 == BAIXO) al_draw_bitmap(astrURSSR, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
-				else al_draw_bitmap(astrURSSR, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
+				 al_draw_bitmap(astrURSSR, largura, altura,  0);
 				break;
 			case ASTRMESSI:
-				if(direcao2 == BAIXO) al_draw_bitmap(astrMessiR, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
-				else al_draw_bitmap(astrMessiR, largura, altura, ALLEGRO_FLIP_HORIZONTAL);
+				 al_draw_bitmap(astrMessiR, largura, altura,  0);
 				break;
 		}
 	}
@@ -234,7 +228,7 @@ void printPlayers(Player * lista_jogadores){
 	for(i=0;i<MAX_CLIENTS;i++){
 		if(strcmp(lista_jogadores[i].login,"") != 0){
 			//al_draw_filled_circle(LARGURA/22*(2*(float)lista_jogadores[i].posicao.x+1),ALTURA/22*(2*(float)lista_jogadores[i].posicao.y+1), 10, cor);
-			printGameCharacter(lista_jogadores[i].personagem,32*(float)lista_jogadores[i].posicao.x, 24+32*(float) lista_jogadores[i].posicao.y, lista_jogadores[i].estado, lista_jogadores[i].direcao, lista_jogadores[i].direcao2);
+			printGameCharacter(lista_jogadores[i].personagem,32*(float)lista_jogadores[i].posicao.x, 24+32*(float) lista_jogadores[i].posicao.y, lista_jogadores[i].estado);
 		}
 	}
 }
@@ -452,7 +446,7 @@ int main(void){
     {
         al_draw_text(font, al_map_rgb(255, 255, 255), LARGURA_TELA / 2,
                      (ALTURA_TELA - al_get_font_ascent(font)) / 2,
-                     ALLEGRO_ALIGN_CENTRE, "<login>");
+                     ALLEGRO_ALIGN_CENTRE, "<Username>");
     }
         
         al_flip_display();    
@@ -643,12 +637,12 @@ int main(void){
 		    }
 
 			if(strcmp(lista_jogadores[meu_id].login,"")==0){
-				//telaGameplay=0;
-                //teladVit=1;
+				telaGameplay=0;
+                teladVit=1;
 			}
 			else if(playersReady(lista_jogadores) == 1){
-				//telaGameplay=0;
-                //teladDer=1;
+				telaGameplay=0;
+                teladDer=1;
 			}
                     int index;
                     index = procura(lista_jogadores);

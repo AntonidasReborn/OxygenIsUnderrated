@@ -93,31 +93,31 @@ int checkPosition(int xCheck, int yCheck, Player* playerList){
 
 
 Player defaultPlayer(int id_player){
-  Player temp;
-  temp.id = id_player;
-  temp.oxigenio=MAX_HP; 
-  temp.movimento=NENHUM;
-  strcpy(temp.login,"");
-  temp.estado = DIREITA;
-  temp.personagem=ASTRBR;
+  Player aux;
+  aux.id = id_player;
+  aux.oxigenio=MAX_HP; 
+  aux.movimento=NENHUM;
+  strcpy(aux.login,"");
+  aux.estado = DIREITA;
+  aux.personagem=ASTRURSS;
   
   switch(id_player){
     case 0:
-      temp.posicao.x=3;
-      temp.posicao.y=3;
+      aux.posicao.x=3;
+      aux.posicao.y=3;
 	  break;
     case 1:
-      temp.posicao.x=9;
-      temp.posicao.y=9;
+      aux.posicao.x=9;
+      aux.posicao.y=9;
 	  break;
     case 2:
-      temp.posicao.x=22;
-      temp.posicao.y=3;
+      aux.posicao.x=22;
+      aux.posicao.y=3;
 	  break;
   }
-  temp.direcao = DIREITA;
-  temp.direcao = BAIXO;
-  return temp;
+  aux.direcao = DIREITA;
+  aux.direcao = BAIXO;
+  return aux;
 }
 
 int clearListPlayers(Player* lista_jogadores){
