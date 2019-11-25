@@ -17,7 +17,7 @@
 
 #define BUFFER_SIZE 100
 #define MAX_HP 300
-#define MAX_CLIENTS 2
+#define MAX_CLIENTS 3
 #define ASTRBR 1
 #define ASTRURSS 2
 #define ASTRMESSI 3
