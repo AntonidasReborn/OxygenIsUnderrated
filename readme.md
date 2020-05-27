@@ -1,7 +1,7 @@
 # Projeto de IP
 
 Projeto de Introdução à Programação - CIn, UFPE.  
-De maneira geral, o projeto é um jogo que envolve conexão e pessoas em computadores diferentes jogando ao mesmo tempo.  
+De maneira geral, o projeto é um jogo que envolve conexão entre pessoas em computadores diferentes jogando ao mesmo tempo.  
 Para isso, vai ser usada a arquitetura cliente-servidor, e a ferramenta utilizada na conexão é socket.
 Neste git será disponibilizada uma biblioteca desenvolvida pela equipe de monitores, para facilitar o uso de socket.  
 
