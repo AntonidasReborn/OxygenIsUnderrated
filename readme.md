@@ -33,4 +33,4 @@ Idealmente alguns exemplos de uso da biblioteca serão colocados na pasta de exe
 
 
 ## Agradecimentos:
-Esta é uma modificação de 2019.2, onde [Flavio Júnior](https://github.com/FlaviojunioR-JCV), [Antonio Carlos](https://github.com/AntonidasReborn), [Renan Siqueira](https://github.com/Renangsa) , [Vinicius Principe](https://github.com/ViniciusPrincipe) , [Heitor](https://github.com/Hbprado) , [Vinicius Pereira](https://github.com/vinipa) e [João Barreto](https://github.com/joaopbarret)
+Esta é uma modificação de 2019.2, onde [Flavio Júnior](https://github.com/FlaviojunioR-JCV), [Antonio Carlos](https://github.com/AntonidasReborn), [Renan Siqueira](https://github.com/Renangsa) , [Vinicius Principe](https://github.com/ViniciusPrincipe) , [Heitor](https://github.com/Hbprado) , [Vinicius Pereira](https://github.com/vinipa) e [João Barreto](https://github.com/joaopbarret) foram contribuidores.
